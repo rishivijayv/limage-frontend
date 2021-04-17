@@ -1,5 +1,9 @@
+import { useParams } from 'react-router-dom';
+
 function Labels(){
-    return <h1>Labels</h1>;
+    const { username } = useParams();
+
+    return <h1>Labels for {username} </h1>;
 }
 
 export default Labels;
