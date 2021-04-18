@@ -6,7 +6,6 @@ function UploadedImages(){
 
     return (
         <div>
-            <h1>UploadedImages for {username}</h1>
             <ul>
                 <li>
                     Image 1

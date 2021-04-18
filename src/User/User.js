@@ -8,6 +8,7 @@ import {
 import Labels from './Labels/Labels';
 import Settings from './Settings/Settings';
 import UploadedImages from './UploadedImages/UploadedImages';
+import SavedImages from './SavedImages/SavedImages';
 
 function User(){
     const { username } = useParams();
@@ -30,6 +31,9 @@ function User(){
             <Switch>
                 <Route exact path={match.path}>
                     <UploadedImages />
+                </Route>
+                <Route path={`${match.path}/labels/:labelName`}>
+                    <SavedImages />
                 </Route>
                 <Route path={`${match.path}/labels`}>
                     <Labels />

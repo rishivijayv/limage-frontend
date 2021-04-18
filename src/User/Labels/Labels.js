@@ -22,7 +22,6 @@ function Labels(){
                     <Link to={`${match.url}/label2`}> Label 2 </Link>
                 </li>
             </ul>
-
         </div>
         
     );
