@@ -1,22 +1,22 @@
 import { Link, useParams, useRouteMatch } from 'react-router-dom';
 
-function Home(){
+function UploadedImages(){
     const { username } = useParams();
     const match = useRouteMatch();
 
     return (
         <div>
-            <h1>Home for {username}</h1>
+            <h1>UploadedImages for {username}</h1>
             <ul>
                 <li>
-                    <Link to={`${match.url}/labels`}> Labels </Link>
+                    Image 1
                 </li>
                 <li>
-                    <Link to={`${match.url}/settings`}> Settings </Link>
+                    Image 2
                 </li>
             </ul>    
         </div>
     );
 }
 
-export default Home;
+export default UploadedImages;

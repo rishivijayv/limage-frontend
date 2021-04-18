@@ -1,20 +1,35 @@
 import {
+    Link,
     Switch,
     Route,
-    useRouteMatch
+    useRouteMatch,
+    useParams
 } from "react-router-dom";
 import Labels from './Labels/Labels';
 import Settings from './Settings/Settings';
-import Home from './Home/Home';
+import UploadedImages from './UploadedImages/UploadedImages';
 
 function User(){
-    // const { username } = useParams();
+    const { username } = useParams();
     const match = useRouteMatch();
     return (
         <div>            
+            <h1>Home for {username}</h1>
+            <ul>
+                <li>
+                    <Link to={match.url}>Images</Link>
+                </li>
+                <li>
+                    <Link to={`${match.url}/labels`}> Labels </Link>
+                </li>
+                <li>
+                    <Link to={`${match.url}/settings`}> Settings </Link>
+                </li>
+            </ul>  
+
             <Switch>
                 <Route exact path={match.path}>
-                    <Home />
+                    <UploadedImages />
                 </Route>
                 <Route path={`${match.path}/labels`}>
                     <Labels />
