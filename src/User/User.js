@@ -9,12 +9,14 @@ import Labels from './Labels/Labels';
 import Settings from './Settings/Settings';
 import UploadedImages from './UploadedImages/UploadedImages';
 import SavedImages from './SavedImages/SavedImages';
+import Navigation from '../Navigation/Navigation';
 
 function User(){
     const { username } = useParams();
     const match = useRouteMatch();
     return (
         <div>            
+            <Navigation />
             <h1>Home for {username}</h1>
             <ul>
                 <li>
