@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
                     </div>  
                     
                     <div className={classes.navigationGroup}>
+                        <Buttons />
                     </div>
 
                 </Toolbar>
