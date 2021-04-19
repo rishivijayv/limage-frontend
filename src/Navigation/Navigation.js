@@ -1,9 +1,9 @@
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
 import Banner from './Banner/Banner';
-import Buttons from './Buttons/Buttons';
+import NavButtons from './NavButtons/NavButtons';
 import LabelDiscoverySearch from './LabelDiscoverySearch/LabelDiscoverySearch';
 
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
                     </div>  
                     
                     <div className={classes.navigationGroup}>
-                        <Buttons />
+                        <NavButtons />
                     </div>
 
                 </Toolbar>

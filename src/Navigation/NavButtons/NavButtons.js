@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Buttons(){
+function NavButtons(){
     const classes = useStyles();
 
     return (
@@ -32,4 +32,4 @@ function Buttons(){
     );
 }
 
-export default Buttons;
+export default NavButtons;

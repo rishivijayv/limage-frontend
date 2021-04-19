@@ -13,9 +13,9 @@ const theme = createMuiTheme({
     search: {
       position: 'relative',
       borderRadius: defaultTheme.shape.borderRadius,
-      backgroundColor: fade(defaultTheme.palette.common.white, 0.15),
+      backgroundColor: fade(defaultTheme.palette.common.white, 0.25),
       '&:hover': {
-        backgroundColor: fade(defaultTheme.palette.common.white, 0.25),
+        backgroundColor: fade(defaultTheme.palette.common.white, 0.35),
       },
       marginLeft: 0,
       width: '100%',
@@ -30,7 +30,7 @@ const theme = createMuiTheme({
       justifyContent: 'center',
     },
     inputRoot: {
-      color: 'inherit',
+      color: defaultTheme.palette.common.white
     },
     inputInput: {
       padding: defaultTheme.spacing(1, 1, 1, 0),
@@ -38,9 +38,9 @@ const theme = createMuiTheme({
       transition: defaultTheme.transitions.create('width'),
       width: '100%',
       [defaultTheme.breakpoints.up('sm')]: {
-        width: '20ch',
+        width: '40ch',
         '&:focus': {
-          width: '30ch',
+          width: '50ch',
         },
       },
     },
