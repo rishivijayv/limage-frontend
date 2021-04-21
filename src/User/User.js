@@ -10,6 +10,7 @@ import Settings from './Settings/Settings';
 import UploadedImages from './UploadedImages/UploadedImages';
 import SavedImages from './SavedImages/SavedImages';
 import Navigation from '../Navigation/Navigation';
+import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     profileOptions: {
         listStyleType: 'none',
         padding: '0',
+        marginLeft: '6px',
         '& a': {
             textDecoration: 'none',
             fontWeight: '900',
@@ -47,6 +49,7 @@ function User(){
             <Navigation />
                 <div className={classes.mainContainer}>
                     <div className={classes.username}>{username}</div>
+
                     <ul className={classes.profileOptions}>
                         <li>
                             <Link to={match.url}>Images</Link>
@@ -57,7 +60,9 @@ function User(){
                         {/* <li>
                             <Link to={`${match.url}/settings`}> Settings </Link>
                         </li> */}
-                    </ul>  
+                    </ul> 
+
+                    <TextField label="Outlined" variant="outlined" />
 
                     <Switch>
                         <Route exact path={match.path}>
