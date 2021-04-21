@@ -12,6 +12,7 @@ import SavedImages from './SavedImages/SavedImages';
 import Navigation from '../Navigation/Navigation';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 function User(){
     const classes = useStyles();
+    const [labelSearch, setLabelSearch] = useState("");
     
     const { username } = useParams();
     const match = useRouteMatch();
@@ -67,13 +69,13 @@ function User(){
                         </li> */}
                     </ul> 
 
-                    <TextField label="Search by Label" variant="outlined" />
+                    <TextField label="Search by Label" variant="outlined" onChange={(e) => setLabelSearch(e.target.value)}/>
                     
                     <hr className={classes.divider}/>
 
                     <Switch>
                         <Route exact path={match.path}>
-                            <UploadedImages />
+                            <UploadedImages toSearch={labelSearch}/>
                         </Route>
                         <Route path={`${match.path}/labels/:labelName`}>
                             <SavedImages />
