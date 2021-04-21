@@ -36,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
             display: 'inline-block',
             marginRight: '20px'
         }
+    },
+    divider: {
+        marginTop: '12px',
+        width: '300px',
+        marginLeft: '0px'
     }
 }));
 
@@ -63,6 +68,8 @@ function User(){
                     </ul> 
 
                     <TextField label="Search by Label" variant="outlined" />
+                    
+                    <hr className={classes.divider}/>
 
                     <Switch>
                         <Route exact path={match.path}>
