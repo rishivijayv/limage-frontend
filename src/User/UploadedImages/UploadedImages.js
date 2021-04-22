@@ -34,13 +34,13 @@ function UploadedImages({ toSearch }){
 
     return (
         <div>
-            <GridList cellHeight={350} cols={3}>
+            <GridList cellHeight={350} cellWidth={400} cols={3}>
                 {tempData.filter(image => image.label.startsWith(toSearch)).map((image) => {
                     return <GridListTile>
                         <img src={image.img} />
                         <GridListTileBar 
                             title={image.title}
-                            subtitle={<span><b>#{image.label}</b></span>}
+                            subtitle={<span><b>~{image.label}~</b></span>}
                         />
                     </GridListTile>
                 })}
