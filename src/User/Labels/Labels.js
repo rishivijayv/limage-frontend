@@ -5,23 +5,25 @@ import {
     useRouteMatch, 
     useParams 
 } from 'react-router-dom';
+import { labels } from '../../TempData/TempData';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
-function Labels(){
+function Labels({ toSearch }){
     const { username } = useParams();
     const match = useRouteMatch();
 
     return (
         <div>
-            <h1>Labels for {username} </h1>
-
-            <ul>
-                <li>
-                    <Link to={`${match.url}/label1`}> Label 1 </Link>
-                </li>
-                <li>
-                    <Link to={`${match.url}/label2`}> Label 2 </Link>
-                </li>
-            </ul>
+            <GridList cellHeight={350} cellWidth={400} cols={3}>
+                {labels
+                .filter(label => label.startsWith(toSearch))
+                .map((label) => {
+                    return <GridListTile>
+                        <b>~{label}~</b>
+                    </GridListTile>
+                })}
+            </GridList>
         </div>
         
     );

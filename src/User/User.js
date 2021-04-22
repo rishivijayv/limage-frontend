@@ -51,6 +51,7 @@ function User(){
     
     const { username } = useParams();
     const match = useRouteMatch();
+
     return (
         <div>            
             <Navigation />
@@ -62,11 +63,8 @@ function User(){
                             <Link to={match.url}>Images</Link>
                         </li>
                         <li>
-                            <Link to={`${match.url}/labels`}> Labels </Link>
+                            <Link to={`${match.url}/labels`} > Labels </Link>
                         </li>
-                        {/* <li>
-                            <Link to={`${match.url}/settings`}> Settings </Link>
-                        </li> */}
                     </ul> 
 
                     <TextField label="Search by Label" variant="outlined" onChange={(e) => setLabelSearch(e.target.value)}/>
@@ -81,7 +79,7 @@ function User(){
                             <SavedImages />
                         </Route>
                         <Route path={`${match.path}/labels`}>
-                            <Labels />
+                            <Labels toSearch={labelSearch} />
                         </Route>
                         <Route path={`${match.path}/settings`}>
                             <Settings />
