@@ -12,6 +12,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const useStyles = makeStyles((theme) => ({
     labelCard: {
@@ -19,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '340px',
         border: '1px solid black'
     },
-    labelContent: {
+    centerContent: {
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
     }
 }));
 
@@ -40,11 +41,14 @@ function Labels({ toSearch }){
                 .map((label) => {
                     return <GridListTile>
                         <Card variant="outlined" className={classes.labelCard}>
-                            <CardContent className={classes.labelContent}>
-                                <Typography variant="h2">
-                                    ~{label}~
-                                </Typography>
-                            </CardContent>
+                            <CardActionArea className={classes.centerContent}>
+                                <CardContent className={classes.centerContent}>
+                                    <Typography variant="h2">
+                                        ~{label}~
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+
                         </Card>
                     </GridListTile>
                 })}
