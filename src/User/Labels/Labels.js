@@ -1,9 +1,6 @@
 import { 
-    Link, 
-    Switch,
-    Route,
     useRouteMatch, 
-    useParams 
+    useHistory 
 } from 'react-router-dom';
 import { labels } from '../../TempData/TempData';
 import GridList from '@material-ui/core/GridList';
@@ -13,8 +10,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     labelCard: {
@@ -34,40 +29,26 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function viewImagesForLabel(labelText){
-    const labelName = labelText.substring(1, labelText.length-1);
-
-}
 
 function Labels({ toSearch }){
-    const { username } = useParams();
     const match = useRouteMatch();
+    const history = useHistory();
     const classes = useStyles();
-    const [labelName, setLabelName] = useState(null);
 
-    const viewImagesForLabel = (labelText) => {
-        setLabelName(labelText.substring(1, labelText.length - 1));
+    const navigateToLabel = (labelText) => {
+        const labelName = labelText.substring(1, labelText.length - 1);
+        history.push(`${match.url}/${labelName}`);
     };
-
 
     return (
         <div>
-            {labelName != null ? 
-                <Breadcrumbs separator=">" className={classes.breadcrumb}>
-                    <Link to={match.url}> Labels  </Link>
-                    <Link to={`${match.url}/${labelName}`}> {labelName}  </Link>
-                </Breadcrumbs>
-                :
-                null
-            }
-
             <GridList cellHeight={350} cellWidth={400} cols={3}>
                 {labels
                 .filter(label => label.startsWith(toSearch))
                 .map((label) => {
                     return <GridListTile>
                         <Card variant="outlined" className={classes.labelCard}>
-                            <CardActionArea onClick={(e) => viewImagesForLabel(e.target.innerText)} className={classes.centerContent}>
+                            <CardActionArea onClick={(e) => navigateToLabel(e.target.innerText)} className={classes.centerContent}>
                                 <CardContent className={classes.centerContent}>
                                     <Typography variant="h2">
                                         ~{label}~
