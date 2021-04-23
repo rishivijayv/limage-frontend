@@ -49,7 +49,7 @@ function UploadedImages({ toSearch }){
                 {userUploadedImages
                 .filter(image => image.label.startsWith(toSearch))
                 .map((image, index) => {
-                    const lineBreak = (index % 3 == 0) ? <br /> : null;
+                    const lineBreak = (index % 3 === 0) ? <br /> : null;
                     return (
                         <Grid item xs={4} key={index}>
                             <Card className={classes.imageCard}>

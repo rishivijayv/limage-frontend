@@ -2,6 +2,8 @@ import {
     Link,
     Switch,
     Route,
+    Nav,
+    NavLink,
     useRouteMatch,
     useParams
 } from "react-router-dom";
@@ -10,6 +12,7 @@ import Settings from './Settings/Settings';
 import UploadedImages from './UploadedImages/UploadedImages';
 import SavedImages from './SavedImages/SavedImages';
 import Navigation from '../Navigation/Navigation';
+import Upload from './Upload/Upload';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
@@ -28,22 +31,30 @@ const useStyles = makeStyles((theme) => ({
         listStyleType: 'none',
         padding: '0',
         marginLeft: '6px',
-        '& a': {
-            textDecoration: 'none',
-            fontWeight: '900',
-            fontSize: '22px'
-        },
         '& li': {
             display: 'inline-block',
-            marginRight: '20px'
+            marginRight: '20px',
+            color: theme.palette.common.black
         }
     },
     divider: {
         marginTop: '12px',
         width: '300px',
         marginLeft: '0px'
+    },
+    selectedOption: {
+        fontWeight: '800'
+    },
+    optionUrl: {
+        textDecoration: 'none',
+        fontSize: '22px',
+        color: 'black',
     }
 }));
+
+function getProfileOption(cssClasses, optionUrl, optionName){
+    return <NavLink exact className={cssClasses.optionUrl} activeClassName={cssClasses.selectedOption} to={optionUrl}> {optionName} </NavLink>
+}
 
 function User(){
     const classes = useStyles();
@@ -60,10 +71,13 @@ function User(){
 
                     <ul className={classes.profileOptions}>
                         <li>
-                            <Link to={match.url}>Images</Link>
+                            {getProfileOption(classes, match.url, "Images")}
                         </li>
                         <li>
-                            <Link to={`${match.url}/labels`} > Labels </Link>
+                            {getProfileOption(classes, `${match.url}/labels`, "Labels")}
+                        </li>
+                        <li>
+                            {getProfileOption(classes, `${match.url}/upload`, "Upload")}
                         </li>
                     </ul> 
 
@@ -72,9 +86,6 @@ function User(){
                     <hr className={classes.divider}/>
 
                     <Switch>
-                        <Route exact path={match.path}>
-                            <UploadedImages toSearch={labelSearch}/>
-                        </Route>
                         <Route path={`${match.path}/labels/:labelName`}>
                             <SavedImages />
                         </Route>
@@ -83,6 +94,12 @@ function User(){
                         </Route>
                         <Route path={`${match.path}/settings`}>
                             <Settings />
+                        </Route>
+                        <Route path={`${match.path}/upload`}>
+                            <Upload />
+                        </Route>
+                        <Route exact path={match.path}>
+                            <UploadedImages toSearch={labelSearch}/>
                         </Route>
                     </Switch>
             </div>
