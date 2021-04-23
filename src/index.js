@@ -6,10 +6,23 @@ import { fade, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 const defaultTheme = createMuiTheme();
 
 const theme = createMuiTheme({
+  overrides: {
+    MuiBreadcrumbs: {
+      separator: {
+        fontSize: '25px',
+        color: defaultTheme.palette.common.black
+      }
+    }
+  },
   typography: {
     fontFamily: "'Raleway', sans-serif"
   },
   custom: {
+    basicLink: {
+      textDecoration: 'none',
+      fontWeight: '900',
+      fontSize: '22px'
+    },
     search: {
       position: 'relative',
       borderRadius: defaultTheme.shape.borderRadius,

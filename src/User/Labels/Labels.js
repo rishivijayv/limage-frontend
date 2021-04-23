@@ -13,6 +13,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     labelCard: {
@@ -25,23 +27,47 @@ const useStyles = makeStyles((theme) => ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+    },
+    breadcrumb: {
+        marginBottom: '5px',
+        '& a': theme.custom.basicLink
     }
 }));
+
+function viewImagesForLabel(labelText){
+    const labelName = labelText.substring(1, labelText.length-1);
+
+}
 
 function Labels({ toSearch }){
     const { username } = useParams();
     const match = useRouteMatch();
     const classes = useStyles();
+    const [labelName, setLabelName] = useState(null);
+
+    const viewImagesForLabel = (labelText) => {
+        setLabelName(labelText.substring(1, labelText.length - 1));
+    };
+
 
     return (
         <div>
+            {labelName != null ? 
+                <Breadcrumbs separator=">" className={classes.breadcrumb}>
+                    <Link to={match.url}> Labels  </Link>
+                    <Link to={`${match.url}/${labelName}`}> {labelName}  </Link>
+                </Breadcrumbs>
+                :
+                null
+            }
+
             <GridList cellHeight={350} cellWidth={400} cols={3}>
                 {labels
                 .filter(label => label.startsWith(toSearch))
                 .map((label) => {
                     return <GridListTile>
                         <Card variant="outlined" className={classes.labelCard}>
-                            <CardActionArea className={classes.centerContent}>
+                            <CardActionArea onClick={(e) => viewImagesForLabel(e.target.innerText)} className={classes.centerContent}>
                                 <CardContent className={classes.centerContent}>
                                     <Typography variant="h2">
                                         ~{label}~
