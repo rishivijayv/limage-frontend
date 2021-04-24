@@ -1,8 +1,6 @@
 import {
-    Link,
     Switch,
     Route,
-    Nav,
     NavLink,
     useRouteMatch,
     useParams
@@ -13,9 +11,7 @@ import UploadedImages from './UploadedImages/UploadedImages';
 import SavedImages from './SavedImages/SavedImages';
 import Navigation from '../Navigation/Navigation';
 import Upload from './Upload/Upload';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
@@ -52,16 +48,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function getProfileOption(cssClasses, optionUrl, optionName){
-    return <NavLink exact className={cssClasses.optionUrl} activeClassName={cssClasses.selectedOption} to={optionUrl}> {optionName} </NavLink>
-}
-
 function User(){
     const classes = useStyles();
-    const [labelSearch, setLabelSearch] = useState("");
-    
+
     const { username } = useParams();
     const match = useRouteMatch();
+    console.log(match);
+
+    const getProfileOption = (optionUrl, optionName) => {
+        return <NavLink exact 
+                        className={classes.optionUrl} 
+                        activeClassName={classes.selectedOption} 
+                        to={optionUrl}> 
+                    {optionName} 
+                </NavLink>
+    };
 
     return (
         <div>            
@@ -71,17 +72,15 @@ function User(){
 
                     <ul className={classes.profileOptions}>
                         <li>
-                            {getProfileOption(classes, match.url, "Images")}
+                            {getProfileOption(match.url, "Images")}
                         </li>
                         <li>
-                            {getProfileOption(classes, `${match.url}/labels`, "Labels")}
+                            {getProfileOption(`${match.url}/labels`, "Labels")}
                         </li>
                         <li>
-                            {getProfileOption(classes, `${match.url}/upload`, "Upload")}
+                            {getProfileOption(`${match.url}/upload`, "Upload")}
                         </li>
                     </ul> 
-
-                    <TextField label="Search by Label" variant="outlined" onChange={(e) => setLabelSearch(e.target.value)}/>
                     
                     <hr className={classes.divider}/>
 
@@ -90,7 +89,7 @@ function User(){
                             <SavedImages />
                         </Route>
                         <Route path={`${match.path}/labels`}>
-                            <Labels toSearch={labelSearch} />
+                            <Labels />
                         </Route>
                         <Route path={`${match.path}/settings`}>
                             <Settings />
@@ -99,7 +98,7 @@ function User(){
                             <Upload />
                         </Route>
                         <Route exact path={match.path}>
-                            <UploadedImages toSearch={labelSearch}/>
+                            <UploadedImages/>
                         </Route>
                     </Switch>
             </div>

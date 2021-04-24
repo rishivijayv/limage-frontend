@@ -2,6 +2,7 @@ import {
     useRouteMatch, 
     useHistory 
 } from 'react-router-dom';
+import { useState } from 'react';
 import { labels } from '../../TempData/TempData';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -10,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import SearchField from '../SearchField/SearchField';
 
 const useStyles = makeStyles((theme) => ({
     labelCard: {
@@ -30,10 +32,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Labels({ toSearch }){
+function Labels(){
     const match = useRouteMatch();
     const history = useHistory();
     const classes = useStyles();
+    const [toSearch, setToSearch] = useState("");
 
     const navigateToLabel = (labelText) => {
         const labelName = labelText.substring(1, labelText.length - 1);
@@ -42,6 +45,8 @@ function Labels({ toSearch }){
 
     return (
         <div>
+            <SearchField label="Search for Label" onChange={(e) => setToSearch(e.target.value)}/>
+            <br />
             <GridList cellHeight={350} cellWidth={400} cols={3}>
                 {labels
                 .filter(label => label.startsWith(toSearch))
