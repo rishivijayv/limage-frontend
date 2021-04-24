@@ -55,8 +55,6 @@ function UploadedImages(){
         setImages(userUploadedImages.slice());
     };
 
-    console.log('Rendering these images: ');
-    console.log(images)
     return (
         <div>
             <SearchField label="Search by Label" onChange={(e) => filterImages(e.target.value)}/>

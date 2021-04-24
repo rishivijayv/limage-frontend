@@ -5,6 +5,8 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import PublishIcon from '@material-ui/icons/Publish';
+import DoneIcon from '@material-ui/icons/Done';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -51,10 +53,24 @@ const useStyles = makeStyles((theme) => ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+    },
+    progress: {
+        color: theme.palette.common.black
+    },
+    successfulSubmit: {
+        fontWeight: 'bold',
+        color: theme.custom.success.color
+    },
+    errorSubmit: {
+        fontWeight: 'bold',
+        color: theme.custom.error.color
     }
 }));
 
-
+const initResponse = {
+    data: null,
+    error: null
+};
 
 function Upload(){
     const classes = useStyles();
@@ -62,6 +78,8 @@ function Upload(){
     const [imagePreview, setImagePreview] = useState(null);
     const [imageLabel, setImageLabel] = useState("");
     const [labelInvalid, setLabelInvalid] = useState(false);
+    const [imageSubmitted, setImageSubmitted] = useState(false);
+    const [response, setResponse] = useState(initResponse);
 
     // Using effect to revoke object URL after component unmounts, as per https://stackoverflow.com/a/57781164
     useEffect(() => {
@@ -81,13 +99,41 @@ function Upload(){
         setImageFile(e.target.files[0]);
     };
 
-    const submitImageOnCheck = () => {
+    // TODO: Remove when API implemented
+    const timeout = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    };
+    const uploadUserImage = async () => {
+        await timeout(2000);
+        return {
+            data: 'sample response',
+            error: null
+        };
+    };
+
+    const submitImageOnCheck = async () => {
         if(imageLabel === ""){
             setLabelInvalid(true);
+            return;
         }else if(labelInvalid){
             setLabelInvalid(false);
         }
+
+        setImageSubmitted(true);
+
+        const uploadResponse = await uploadUserImage();
+        console.log(uploadResponse)
+        setResponse({
+            data: uploadResponse.data,
+            error: uploadResponse.error
+        });
+
     }
+
+
+    const waitingResponse = imageSubmitted && (response.data == null) && (response.error == null);
+    const successResponse = response.data != null && response.error == null;
+    const errorResponse = response.data == null && response.error != null;
 
     return (
         <form className={classes.uploadForm}>
@@ -99,7 +145,10 @@ function Upload(){
                     helperText={labelInvalid ? "A label is mandatory for an image" : ""}
                     onChange={(e) => setImageLabel(e.target.value)}/>
             <br />
-            {imagePreview != null ?
+            {waitingResponse ? <CircularProgress className={classes.progress}/> : null}
+            {successResponse ? <div className={classes.successfulSubmit}>Image Submitted</div> : null}
+            {errorResponse ? <div className={classes.errorSubmit}>Something went wrong, please try again.</div> : null}
+            {imagePreview != null ? 
             <div className={classes.previewContainer}>
                 <img src={imagePreview} className={classes.previewImage}/> 
             </div> 

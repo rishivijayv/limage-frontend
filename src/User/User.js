@@ -55,7 +55,6 @@ function User(){
 
     const { username } = useParams();
     const match = useRouteMatch();
-    console.log(match);
 
     const getProfileOption = (optionUrl, optionName) => {
         return <NavLink exact 

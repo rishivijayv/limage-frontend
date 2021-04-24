@@ -18,6 +18,12 @@ const theme = createMuiTheme({
     fontFamily: "'Raleway', sans-serif"
   },
   custom: {
+    success: {
+      color: '#00b359'
+    },
+    error: {
+      color: defaultTheme.palette.error.main
+    },
     basicLink: {
       textDecoration: 'none',
       fontWeight: '900',
