@@ -3,13 +3,18 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     searchField: {
-        marginBottom: '10px'
+        marginTop: '2px',
     },
+    fieldContainer: {
+        textAlign: 'center'
+    }
 });
 
 function SearchField({ label, onChange }){
     const classes = useStyles();
-    return <TextField label={label} onChange={onChange} variant="outlined" className={classes.searchField}/>
+    return <div className={classes.fieldContainer}>
+        <TextField label={label} onChange={onChange} variant="outlined" className={classes.searchField}/>
+        </div>
 }
 
 export default SearchField;

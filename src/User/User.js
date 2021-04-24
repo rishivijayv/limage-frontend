@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
         margin: '20px',
         fontFamily: theme.typography.fontFamily,
     },
+    profileHeader: {
+        textAlign: 'center'
+    },
     username: {
         fontSize: '60px',
         fontWeight: '800',
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     profileOptions: {
         listStyleType: 'none',
         padding: '0',
-        marginLeft: '6px',
+        marginLeft: '12px',
         '& li': {
             display: 'inline-block',
             marginRight: '20px',
@@ -36,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         marginTop: '12px',
         width: '300px',
-        marginLeft: '0px'
     },
     selectedOption: {
         fontWeight: '800'
@@ -68,21 +70,24 @@ function User(){
         <div>            
             <Navigation />
                 <div className={classes.mainContainer}>
-                    <div className={classes.username}>{username}</div>
+                    <div className={classes.profileHeader}>
+                        <div className={classes.username}>{username}</div>
 
-                    <ul className={classes.profileOptions}>
-                        <li>
-                            {getProfileOption(match.url, "Images")}
-                        </li>
-                        <li>
-                            {getProfileOption(`${match.url}/labels`, "Labels")}
-                        </li>
-                        <li>
-                            {getProfileOption(`${match.url}/upload`, "Upload")}
-                        </li>
-                    </ul> 
-                    
-                    <hr className={classes.divider}/>
+                        <ul className={classes.profileOptions}>
+                            <li>
+                                {getProfileOption(match.url, "Images")}
+                            </li>
+                            <li>
+                                {getProfileOption(`${match.url}/labels`, "Labels")}
+                            </li>
+                            <li>
+                                {getProfileOption(`${match.url}/upload`, "Upload")}
+                            </li>
+                        </ul> 
+                        
+                        <hr className={classes.divider}/>
+                    </div>
+
 
                     <Switch>
                         <Route path={`${match.path}/labels/:labelName`}>
