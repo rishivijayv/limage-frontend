@@ -39,20 +39,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UploadedImages(){
-    const [toSearch, setToSearch] = useState("");
+    const [images, setImages] = useState(userUploadedImages);
 
     const classes = useStyles();
 
+    const filterImages = (label) => {
+        setImages(userUploadedImages.filter(image => image.label.startsWith(label)));
+    };
+
+    const deleteImage = (e, index) => {
+        e.preventDefault();
+        userUploadedImages.splice(index, 1);
+        
+        // Use shallow copy of array so React renders element again
+        setImages(userUploadedImages.slice());
+    };
+
+    console.log('Rendering these images: ');
+    console.log(images)
     return (
         <div>
-            <SearchField label="Search by Label" onChange={(e) => setToSearch(e.target.value)}/>
+            <SearchField label="Search by Label" onChange={(e) => filterImages(e.target.value)}/>
             <br />
             <Grid container spacing={2}>
-                {userUploadedImages
-                .filter(image => image.label.startsWith(toSearch))
+                {images
                 .map((image, index) => {
                     return (
-                        <Grid item xs={4} key={index}>
+                        <Grid item md={4} sm={6} xs={12} key={index}>
                             <Card className={classes.imageCard}>
                                 <CardActionArea>
                                     <CardMedia 
@@ -62,7 +75,7 @@ function UploadedImages(){
                                 </CardActionArea>
                                 <CardActions className={classes.imageActions}>
                                     <b>~{image.label}~</b>
-                                    <IconButton className={classes.imageActionButton} color="inherit">
+                                    <IconButton className={classes.imageActionButton} color="inherit" onClick={(e, index) => deleteImage(e, index)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </CardActions>
