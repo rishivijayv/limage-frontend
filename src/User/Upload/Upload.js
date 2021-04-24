@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import PublishIcon from '@material-ui/icons/Publish';
 import DoneIcon from '@material-ui/icons/Done';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import RestoreIcon from '@material-ui/icons/Restore';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,7 @@ function Upload(){
     const [imageSubmitted, setImageSubmitted] = useState(false);
     const [response, setResponse] = useState(initResponse);
 
+
     // Using effect to revoke object URL after component unmounts, as per https://stackoverflow.com/a/57781164
     useEffect(() => {
         if(!(imageFile instanceof File)){
@@ -122,7 +124,6 @@ function Upload(){
         setImageSubmitted(true);
 
         const uploadResponse = await uploadUserImage();
-        console.log(uploadResponse)
         setResponse({
             data: uploadResponse.data,
             error: uploadResponse.error
@@ -130,10 +131,20 @@ function Upload(){
 
     }
 
+    const resetForm = () => {
+        setImageFile(null);
+        setImagePreview(null);
+        setImageLabel("");
+        setLabelInvalid(false);
+        setImageSubmitted(false);
+        setResponse(initResponse);
+    }
+
 
     const waitingResponse = imageSubmitted && (response.data == null) && (response.error == null);
     const successResponse = response.data != null && response.error == null;
     const errorResponse = response.data == null && response.error != null;
+    const responseNotRecieved = !successResponse && !errorResponse;
 
     return (
         <form className={classes.uploadForm}>
@@ -155,13 +166,22 @@ function Upload(){
             : 
             null}
             <Box>
+                {responseNotRecieved ? 
                 <Button variant="contained" className={classes.button} startIcon={<PhotoCamera />} component="label" key="image-upload-button">
                     {imagePreview != null ? "Change" : "Select"}
                     <input accept="image/*" type="file" onChange={handleImageChange} hidden />
-                </Button> 
-                {imagePreview != null ? 
+                </Button>
+                :
+                null}
+                {responseNotRecieved && imagePreview != null ? 
                 <Button variant="contained" className={classes.button} startIcon={<PublishIcon />} component="label" key="image-submit-button" onClick={submitImageOnCheck}>
                     Submit
+                </Button>
+                :
+                null}
+                {!responseNotRecieved ? 
+                <Button variant="contained" className={classes.button} startIcon={<RestoreIcon />} component="label" key="image-restore-button" onClick={resetForm}>
+                    Submit Another
                 </Button>
                 :
                 null}
