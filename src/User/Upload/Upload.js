@@ -8,6 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+    uploadForm: {
+        textAlign: 'center'
+    },
     button: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
@@ -20,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '10px'
     },
     previewContainer: {
-        maxWidth: '300px',
-        maxHeight: '450px',
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: '10px'
     },
     previewImage: {
         maxWidth: '300px',
@@ -69,7 +74,7 @@ function Upload(){
     };
 
     return (
-        <form>
+        <form className={classes.uploadForm}>
             <TextField className={classes.label} label="Image Label" variant="outlined"/>
             <br />
             {imagePreview != null ?
@@ -79,7 +84,7 @@ function Upload(){
             : 
             null}
             <Button variant="contained" className={classes.button} startIcon={<PhotoCamera />} component="label" key="image-upload-button">
-                {imagePreview != null ? "Chnage" : "Select"}
+                {imagePreview != null ? "Change" : "Select"}
                 <input accept="image/*" type="file" onChange={handleImageChange} hidden />
             </Button> 
             <br />
