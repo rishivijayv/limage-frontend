@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  function Navigation(){
+  function Navigation({ paths }){
     const classes = useStyles();
 
     return (
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
                     </div>  
                     
                     <div className={classes.navigationGroup}>
-                        <NavButtons />
+                        <NavButtons paths={paths}/>
                     </div>
 
                 </Toolbar>

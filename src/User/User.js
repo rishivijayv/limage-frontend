@@ -65,9 +65,14 @@ function User(){
                 </NavLink>
     };
 
+    const navigationBarPaths = {
+        home: match.url,
+        settings: `${match.url}/settings`
+    };
+
     return (
         <div>            
-            <Navigation />
+            <Navigation paths={navigationBarPaths}/>
                 <div className={classes.mainContainer}>
                     <div className={classes.profileHeader}>
                         <div className={classes.username}>{username}</div>

@@ -3,6 +3,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     barButton: {
@@ -14,15 +15,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function NavButtons(){
+function NavButtons({ paths }){
     const classes = useStyles();
+    const history = useHistory();
 
     return (
         <div>
-            <IconButton className={classes.barButton} color="inherit">
+            <IconButton onClick={() => history.push(paths.home)} className={classes.barButton} color="inherit">
                 <HomeIcon/>
             </IconButton>
-            <IconButton className={classes.barButton} color="inherit">
+            <IconButton onClick={() => history.push(paths.settings)} className={classes.barButton} color="inherit">
                 <SettingsIcon />
             </IconButton>
             <IconButton className={classes.barButton} color="inherit">
