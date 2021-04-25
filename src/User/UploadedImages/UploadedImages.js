@@ -59,13 +59,10 @@ function UploadedImages(){
     const [images, setImages] = useState(userUploadedImages);
     const [imageDeleteRequested, setImageDeleteRequested] = useState(false);
     const [imageDeleteResponse, setImageDeleteResponse] = useState(initResponse);
+    const [labelFilter, setLabelFilter] = useState("");
     const [enlargeImage, setEnlargeImage] = useState(null);
 
     const classes = useStyles();
-
-    const filterImages = (label) => {
-        setImages(userUploadedImages.filter(image => image.label.startsWith(label)));
-    };
 
     const timeout = (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms))
@@ -105,10 +102,11 @@ function UploadedImages(){
 
     return (
         <div>
-            <SearchField label="Search by Label" onChange={(e) => filterImages(e.target.value)}/>
+            <SearchField label="Search by Label" onChange={(e) => setLabelFilter(e.target.value)}/>
             <br />
             <Grid container spacing={2}>
                 {images
+                .filter(image => image.label.startsWith(labelFilter))
                 .map((image, index) => {
                     return (
                         <Grid item md={4} sm={6} xs={12} key={index}>
