@@ -41,19 +41,19 @@ const theme = createMuiTheme({
     },
     searchIcon: {
       padding: defaultTheme.spacing(0, 2),
+      marginRight: '20px',
       height: '100%',
       position: 'absolute',
-      pointerEvents: 'none',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      color: defaultTheme.palette.common.white
     },
     inputRoot: {
       color: defaultTheme.palette.common.white
     },
     inputInput: {
-      padding: defaultTheme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${defaultTheme.spacing(4)}px)`,
+      padding: defaultTheme.spacing(1, 1, 1, 2),
       transition: defaultTheme.transitions.create('width'),
       width: '100%',
       [defaultTheme.breakpoints.up('sm')]: {
