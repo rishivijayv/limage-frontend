@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
         maxWidth: '100%',
-        height: '450px',
+        height: '300px',
     },
     imageCard: {
         backgroundColor: theme.palette.common.black,
