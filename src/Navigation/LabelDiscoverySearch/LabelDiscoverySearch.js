@@ -6,12 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
     search: theme.custom.search,
-    searchIcon: {
-        ...theme.custom.searchIcon,
-        '&:hover': {
-            cursor: 'pointer'
-        }
-    },
+    searchIcon: theme.custom.searchIcon,
     inputRoot: theme.custom.inputRoot,
     inputInput: theme.custom.inputInput,
 }));
