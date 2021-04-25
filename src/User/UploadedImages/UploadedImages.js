@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: theme.palette.common.white,
     },
+    enlargedImage: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+        border: `1px solid ${theme.palette.common.white}`
+    }
 }));
 
 const initResponse = {
@@ -54,6 +59,7 @@ function UploadedImages(){
     const [images, setImages] = useState(userUploadedImages);
     const [imageDeleteRequested, setImageDeleteRequested] = useState(false);
     const [imageDeleteResponse, setImageDeleteResponse] = useState(initResponse);
+    const [enlargeImage, setEnlargeImage] = useState(null);
 
     const classes = useStyles();
 
@@ -87,6 +93,11 @@ function UploadedImages(){
         }
     };
 
+    const showEnlargedImage = (e, imageSource) => {
+        e.preventDefault();
+        setEnlargeImage(imageSource);
+    };
+
     const resetDeletion = () => {
         setImageDeleteRequested(false);
         setImageDeleteResponse(initResponse);
@@ -102,7 +113,7 @@ function UploadedImages(){
                     return (
                         <Grid item md={4} sm={6} xs={12} key={index}>
                             <Card className={classes.imageCard}>
-                                <CardActionArea>
+                                <CardActionArea onClick={(e) => showEnlargedImage(e, image.img)}>
                                     <CardMedia 
                                         className={classes.image}
                                         image={image.img}
@@ -123,6 +134,9 @@ function UploadedImages(){
                 {imageDeleteResponse.data == null && imageDeleteResponse.error == null ? <CircularProgress color="inherit"/> : null} 
                 {imageDeleteResponse.data != null ? <h1>Image Successfully Deleted.</h1> : null}
                 {imageDeleteResponse.error != null ? <h1>There was an error in deleting the image. Please try again</h1> : null}
+            </Backdrop>
+            <Backdrop open={enlargeImage != null} onClick={() => setEnlargeImage(null)} className={classes.backdrop}>
+                <img src={enlargeImage} className={classes.enlargedImage} />
             </Backdrop>
         </div>
     );
