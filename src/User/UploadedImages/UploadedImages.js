@@ -5,8 +5,10 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { userUploadedImages } from '../../TempData/TempData';
+import Backdrop from '@material-ui/core/Backdrop';
+import { userImages } from '../../TempData/TempData';
 import { CardActions } from '@material-ui/core';
 
 import SearchField from '../SearchField/SearchField';
@@ -34,12 +36,24 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.20)
         }
-    }
-    
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: theme.palette.common.white,
+    },
 }));
+
+const initResponse = {
+    data: null,
+    error: null
+};
+
+let userUploadedImages = userImages;
 
 function UploadedImages(){
     const [images, setImages] = useState(userUploadedImages);
+    const [imageDeleteRequested, setImageDeleteRequested] = useState(false);
+    const [imageDeleteResponse, setImageDeleteResponse] = useState(initResponse);
 
     const classes = useStyles();
 
@@ -47,12 +61,35 @@ function UploadedImages(){
         setImages(userUploadedImages.filter(image => image.label.startsWith(label)));
     };
 
-    const deleteImage = (e, index) => {
+    const timeout = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    };
+
+    const deleteImage = async (imageId) => {
+        await timeout(3000);
+        return {
+            data: `image ${imageId} deleted`,
+            error: null
+        };
+    };
+
+    const requestImageDeletion = async (e, imageId) => {
         e.preventDefault();
-        userUploadedImages.splice(index, 1);
         
+        setImageDeleteRequested(true);
+        const response = await deleteImage(imageId);
+        setImageDeleteResponse(response);
+
         // Use shallow copy of array so React renders element again
-        setImages(userUploadedImages.slice());
+        if(response.data != null){
+            userUploadedImages = userUploadedImages.filter(image => image.id !== imageId);
+            setImages(userUploadedImages.slice());
+        }
+    };
+
+    const resetDeletion = () => {
+        setImageDeleteRequested(false);
+        setImageDeleteResponse(initResponse);
     };
 
     return (
@@ -73,7 +110,7 @@ function UploadedImages(){
                                 </CardActionArea>
                                 <CardActions className={classes.imageActions}>
                                     <b>~{image.label}~</b>
-                                    <IconButton className={classes.imageActionButton} color="inherit" onClick={(e, index) => deleteImage(e, index)}>
+                                    <IconButton className={classes.imageActionButton} color="inherit" onClick={(e) => requestImageDeletion(e, image.id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </CardActions>
@@ -82,6 +119,11 @@ function UploadedImages(){
                     );
                 })}
             </Grid>
+            <Backdrop open={imageDeleteRequested} onClick={() => resetDeletion()} className={classes.backdrop}>
+                {imageDeleteResponse.data == null && imageDeleteResponse.error == null ? <CircularProgress color="inherit"/> : null} 
+                {imageDeleteResponse.data != null ? <h1>Image Successfully Deleted.</h1> : null}
+                {imageDeleteResponse.error != null ? <h1>There was an error in deleting the image. Please try again</h1> : null}
+            </Backdrop>
         </div>
     );
 }
