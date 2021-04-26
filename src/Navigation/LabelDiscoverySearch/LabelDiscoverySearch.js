@@ -15,12 +15,22 @@ const useStyles = makeStyles((theme) => ({
 function LabelDiscoverySearch(){
     const classes = useStyles();
     const [search, setSearch] = useState("");
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const keyCode = e.keyCode || e.which;
+        if(keyCode === 13){
+            // Enter key was pressed
+            console.log(`You are searching for ${search} after enter key`);
+        }
+    }
     
     return (
         <div className={classes.search}>
             <InputBase
             placeholder="Search for Labels"
             onChange={(e) => setSearch(e.target.value)}
+            onKeyUp={(e) => handleSearch(e)}
             classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
