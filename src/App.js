@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import Landing from './Landing/Landing';
 import User from './User/User';
-import Settings from './User/Settings/Settings';
 import Discover from './Discover/Discover';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -36,9 +35,6 @@ function App() {
         <Switch>
           <Route path="/discover">
               <Discover navButtons={unauthenticatedNavButtons}/>
-          </Route>
-          <Route path={"/profile/settings"}>
-            <Settings />
           </Route>
           <Route path="/profile">
             <User />

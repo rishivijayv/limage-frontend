@@ -2,7 +2,6 @@ import {
     Switch,
     Route,
     useRouteMatch,
-    useParams
 } from "react-router-dom";
 import Labels from './Labels/Labels';
 import UploadedImages from './UploadedImages/UploadedImages';
@@ -14,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Navigation from '../Navigation/Navigation';
 import Heading from './Utilities/Heading';
+import Settings from './Settings/Settings';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -39,7 +39,7 @@ function User(){
             display: SearchIcon 
         },
         { 
-            path: '/profile/settings', 
+            path: `${match.url}/settings`, 
             display: SettingsIcon 
         },
         { 
@@ -77,6 +77,9 @@ function User(){
                     </Route>
                     <Route path={`${match.path}/upload`}>
                         <Upload />
+                    </Route>
+                    <Route path={`${match.path}/settings`}>
+                        <Settings />
                     </Route>
                     <Route exact path={match.path}>
                         <UploadedImages/>

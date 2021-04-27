@@ -1,7 +1,8 @@
-import { useParams } from 'react-router-dom';
+
+
+const username = "rishivijayv"
 
 function Settings() {
-    const { username } = useParams();
 
     return <h1> Settings for {username} </h1>;
 }
