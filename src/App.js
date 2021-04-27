@@ -37,10 +37,10 @@ function App() {
           <Route path="/discover">
               <Discover navButtons={unauthenticatedNavButtons}/>
           </Route>
-          <Route path={`/profile/settings`}>
+          <Route path={"/profile/settings"}>
             <Settings />
           </Route>
-          <Route path="/:username">
+          <Route path="/profile">
             <User />
           </Route>
           <Route path="/">

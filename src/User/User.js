@@ -1,7 +1,6 @@
 import {
     Switch,
     Route,
-    NavLink,
     useRouteMatch,
     useParams
 } from "react-router-dom";
@@ -14,50 +13,19 @@ import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Navigation from '../Navigation/Navigation';
+import Heading from './Utilities/Heading';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     userContainer: {
         margin: '20px'
     },
-    profileHeader: {
-        textAlign: 'center'
-    },
-    username: {
-        fontSize: '60px',
-        fontWeight: '800',
-        marginTop: '20px'
-    },
-    profileOptions: {
-        listStyleType: 'none',
-        padding: '0',
-        marginLeft: '12px',
-        '& li': {
-            display: 'inline-block',
-            marginRight: '20px',
-            color: theme.palette.common.black
-        }
-    },
-    divider: {
-        marginTop: '12px',
-        width: '300px',
-    },
-    selectedOption: {
-        fontWeight: '800'
-    },
-    optionUrl: {
-        textDecoration: 'none',
-        fontSize: '22px',
-        color: 'black',
-    }
-}));
+});
 
-
+const username = "rishivijayv"
 
 function User(){
     const classes = useStyles();
-
-    const { username } = useParams();
     const match = useRouteMatch();
 
     
@@ -80,38 +48,26 @@ function User(){
         }
     ]
 
-    const getProfileOption = (optionUrl, optionName) => {
-        return <NavLink exact 
-                        className={classes.optionUrl} 
-                        activeClassName={classes.selectedOption} 
-                        to={optionUrl}> 
-                    {optionName} 
-                </NavLink>
-    };
+    const userHeadingLinks= [
+        {
+            url: match.url,
+            display: "Images"
+        },
+        {
+            url: `${match.url}/labels`,
+            display: "Labels"
+        },
+        {
+            url: `/profile/upload`,
+            display: "Upload"
+        }
+    ];
 
     return (           
         <div>
             <Navigation pathsWithButtons={authenticatedNavButtons} />
             <div className={classes.userContainer}>
-                <div className={classes.profileHeader}>
-                    <div className={classes.username}>{username}</div>
-
-                    <ul className={classes.profileOptions}>
-                        <li>
-                            {getProfileOption(match.url, "Images")}
-                        </li>
-                        <li>
-                            {getProfileOption(`${match.url}/labels`, "Labels")}
-                        </li>
-                        <li>
-                            {getProfileOption(`${match.url}/upload`, "Upload")}
-                        </li>
-                    </ul> 
-                    
-                    <hr className={classes.divider}/>
-                </div>
-
-
+                <Heading title={username} links={userHeadingLinks} />
                 <Switch>
                     <Route path={`${match.path}/labels/:labelName`}>
                         <SavedImages />
@@ -119,7 +75,7 @@ function User(){
                     <Route path={`${match.path}/labels`}>
                         <Labels />
                     </Route>
-                    <Route path={`${match.path}/upload`}>
+                    <Route path={`/profile/upload`}>
                         <Upload />
                     </Route>
                     <Route exact path={match.path}>
