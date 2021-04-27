@@ -6,17 +6,19 @@ import {
     useParams
 } from "react-router-dom";
 import Labels from './Labels/Labels';
-import Settings from './Settings/Settings';
 import UploadedImages from './UploadedImages/UploadedImages';
 import SavedImages from './SavedImages/SavedImages';
-import Navigation from '../Navigation/Navigation';
 import Upload from './Upload/Upload';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
+import Navigation from '../Navigation/Navigation';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    mainContainer: {
-        margin: '20px',
-        fontFamily: theme.typography.fontFamily,
+    userContainer: {
+        margin: '20px'
     },
     profileHeader: {
         textAlign: 'center'
@@ -50,11 +52,33 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+
 function User(){
     const classes = useStyles();
 
     const { username } = useParams();
     const match = useRouteMatch();
+
+    
+    const authenticatedNavButtons = [
+        { 
+            path: `${match.url}`, 
+            display: HomeIcon 
+        },
+        { 
+            path: '/discover', 
+            display: SearchIcon 
+        },
+        { 
+            path: '/profile/settings', 
+            display: SettingsIcon 
+        },
+        { 
+            path: '/', 
+            display: ExitToAppIcon 
+        }
+    ]
 
     const getProfileOption = (optionUrl, optionName) => {
         return <NavLink exact 
@@ -65,53 +89,46 @@ function User(){
                 </NavLink>
     };
 
-    const navigationBarPaths = {
-        home: match.url,
-        settings: `${match.url}/settings`
-    };
+    return (           
+        <div>
+            <Navigation pathsWithButtons={authenticatedNavButtons} />
+            <div className={classes.userContainer}>
+                <div className={classes.profileHeader}>
+                    <div className={classes.username}>{username}</div>
 
-    return (
-        <div>            
-            <Navigation paths={navigationBarPaths}/>
-                <div className={classes.mainContainer}>
-                    <div className={classes.profileHeader}>
-                        <div className={classes.username}>{username}</div>
-
-                        <ul className={classes.profileOptions}>
-                            <li>
-                                {getProfileOption(match.url, "Images")}
-                            </li>
-                            <li>
-                                {getProfileOption(`${match.url}/labels`, "Labels")}
-                            </li>
-                            <li>
-                                {getProfileOption(`${match.url}/upload`, "Upload")}
-                            </li>
-                        </ul> 
-                        
-                        <hr className={classes.divider}/>
-                    </div>
+                    <ul className={classes.profileOptions}>
+                        <li>
+                            {getProfileOption(match.url, "Images")}
+                        </li>
+                        <li>
+                            {getProfileOption(`${match.url}/labels`, "Labels")}
+                        </li>
+                        <li>
+                            {getProfileOption(`${match.url}/upload`, "Upload")}
+                        </li>
+                    </ul> 
+                    
+                    <hr className={classes.divider}/>
+                </div>
 
 
-                    <Switch>
-                        <Route path={`${match.path}/labels/:labelName`}>
-                            <SavedImages />
-                        </Route>
-                        <Route path={`${match.path}/labels`}>
-                            <Labels />
-                        </Route>
-                        <Route path={`${match.path}/settings`}>
-                            <Settings />
-                        </Route>
-                        <Route path={`${match.path}/upload`}>
-                            <Upload />
-                        </Route>
-                        <Route exact path={match.path}>
-                            <UploadedImages/>
-                        </Route>
-                    </Switch>
+                <Switch>
+                    <Route path={`${match.path}/labels/:labelName`}>
+                        <SavedImages />
+                    </Route>
+                    <Route path={`${match.path}/labels`}>
+                        <Labels />
+                    </Route>
+                    <Route path={`${match.path}/upload`}>
+                        <Upload />
+                    </Route>
+                    <Route exact path={match.path}>
+                        <UploadedImages/>
+                    </Route>
+                </Switch>
             </div>
         </div>
+
     );
 }
 

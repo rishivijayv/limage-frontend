@@ -4,7 +4,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 
 import Banner from './Banner/Banner';
 import NavButtons from './NavButtons/NavButtons';
-import LabelDiscoverySearch from './LabelDiscoverySearch/LabelDiscoverySearch';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  function Navigation({ paths }){
+  function Navigation({ pathsWithButtons }){
     const classes = useStyles();
 
     return (
@@ -29,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
                 <Toolbar className={classes.bar}>
                     <Banner />
 
-                    <div className={classes.navigationGroup}>
+                    {/* <div className={classes.navigationGroup}>
                         <LabelDiscoverySearch />
-                    </div>  
+                    </div>   */}
                     
                     <div className={classes.navigationGroup}>
-                        <NavButtons paths={paths}/>
+                        <NavButtons pathsWithButtons={pathsWithButtons}/>
                     </div>
 
                 </Toolbar>

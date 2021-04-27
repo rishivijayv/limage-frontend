@@ -29,40 +29,6 @@ const theme = createMuiTheme({
       fontWeight: '900',
       fontSize: '22px'
     },
-    search: {
-      position: 'relative',
-      borderRadius: defaultTheme.shape.borderRadius,
-      backgroundColor: fade(defaultTheme.palette.common.white, 0.25),
-      '&:hover': {
-        backgroundColor: fade(defaultTheme.palette.common.white, 0.35),
-      },
-      marginLeft: 0,
-      width: '100%',
-    },
-    searchIcon: {
-      padding: defaultTheme.spacing(0, 2),
-      marginRight: '20px',
-      height: '100%',
-      position: 'absolute',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: defaultTheme.palette.common.white
-    },
-    inputRoot: {
-      color: defaultTheme.palette.common.white
-    },
-    inputInput: {
-      padding: defaultTheme.spacing(1, 1, 1, 2),
-      transition: defaultTheme.transitions.create('width'),
-      width: '100%',
-      [defaultTheme.breakpoints.up('sm')]: {
-        width: '40ch',
-        '&:focus': {
-          width: '50ch',
-        },
-      },
-    },
   },
 })
 
