@@ -75,7 +75,7 @@ function User(){
                     <Route path={`${match.path}/labels`}>
                         <Labels />
                     </Route>
-                    <Route path={`/profile/upload`}>
+                    <Route path={`${match.path}/upload`}>
                         <Upload />
                     </Route>
                     <Route exact path={match.path}>
