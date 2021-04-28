@@ -6,7 +6,12 @@ import {
 import Landing from './Landing/Landing';
 import User from './User/User';
 import Discover from './Discover/Discover';
+import Settings from './Settings/Settings';
 import { makeStyles } from '@material-ui/core/styles';
+import HomeIcon from '@material-ui/icons/Home';
+import SearchIcon from '@material-ui/icons/Search';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -14,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-// Key is the path to which to redirect to, and value is what is text/icon that will be displayed
+// TODO: Replaced with proper protected routes once backend is up and running
 const unauthenticatedNavButtons = [
   {
     path: '/login',
@@ -26,6 +31,25 @@ const unauthenticatedNavButtons = [
   }
 ]
 
+const authenticatedNavButtons = [
+  { 
+      path: `/rishivijayv`, 
+      display: HomeIcon 
+  },
+  { 
+      path: '/discover', 
+      display: SearchIcon 
+  },
+  { 
+      path: '/settings', 
+      display: SettingsIcon 
+  },
+  { 
+      path: '/', 
+      display: ExitToAppIcon 
+  }
+]
+
 function App() {
   const classes = useStyles();
 
@@ -34,9 +58,12 @@ function App() {
       <Router>
         <Switch>
           <Route path="/discover">
-              <Discover navButtons={unauthenticatedNavButtons}/>
+              <Discover navButtons={unauthenticatedNavButtons} />
           </Route>
-          <Route path="/profile">
+          <Route path={`/settings`}>
+              <Settings navButtons={authenticatedNavButtons} />
+          </Route>
+          <Route path="/:username">
             <User />
           </Route>
           <Route path="/">

@@ -37,13 +37,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Heading({ title, links }){
+function Heading({ title, links = [] }){
     const classes = useStyles();
 
     const getOption = (optionUrl, optionName) => {
         return <NavLink exact 
                         className={classes.optionUrl} 
-                        activeClassName={classes.selectedOption} 
+                        activeClassName={classes.selectedOption}
+                        onClick={() => console.log(`Navigation to ${optionUrl}`)} 
                         to={optionUrl}> 
                     {optionName} 
                 </NavLink>

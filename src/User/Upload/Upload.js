@@ -5,7 +5,6 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import PublishIcon from '@material-ui/icons/Publish';
-import DoneIcon from '@material-ui/icons/Done';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RestoreIcon from '@material-ui/icons/Restore';
 import { makeStyles } from '@material-ui/core/styles';
