@@ -30,47 +30,6 @@ function Security(){
     const [newPassword, setNewPassword] = useState(initPassword);
     const [confirmPassword, setConfirmPassword] = useState(initPassword);
 
-    // const handlePasswordChange = (event, passwordObject, passwordSetter) => {
-    //     passwordSetter({ ...passwordObject, ['text']:  event.target.value });
-    // };
-
-    // const handleMouseDownPassword = (event) => {
-    //     event.preventDefault();
-    // }; 
-
-    // const handleClickShowPassword = (passwordObject, passwordSetter) => {
-    //     const toggleShow = !passwordObject.show
-    //     passwordSetter({ ...passwordObject, ['show']: toggleShow });
-    // };
-
-    // const getPasswordField = (passwordObject, passwordSetter, labelText) => {
-    //     const labelWidth = labelText.length * 8.6
-    //     return (
-    //         <FormControl className={classes.passwordContainer} variant="outlined">
-    //             <InputLabel htmlFor="outlined-adornment-password">{labelText}</InputLabel>
-    //             <OutlinedInput
-    //             id="outlined-adornment-password"
-    //             type={passwordObject.show ? 'text' : 'password'}
-    //             value={passwordObject.text}
-    //             onChange={(e) => handlePasswordChange(e, passwordObject, passwordSetter)}
-    //             endAdornment={
-    //                 <InputAdornment position="end">
-    //                 <IconButton
-    //                     aria-label="toggle password visibility"
-    //                     onClick={() => handleClickShowPassword(passwordObject, passwordSetter)}
-    //                     onMouseDown={(e) => handleMouseDownPassword(e)}
-    //                     edge="end"
-    //                 >
-    //                     {passwordObject.show ? <Visibility /> : <VisibilityOff />}
-    //                 </IconButton>
-    //                 </InputAdornment>
-    //             }
-    //             labelWidth={labelWidth}
-    //             />
-    //         </FormControl>
-    //     );
-    // };
-
     return (
         <div className={classes.container}>
             <h3>Change Password</h3>
