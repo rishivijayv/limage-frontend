@@ -1,6 +1,7 @@
 
-import Heading from '../User/Utilities/Heading';
+import Heading from '../Utilities/Heading';
 import Navigation from '../Navigation/Navigation';
+import Security from './Security/Security';
 
 function Settings({ navButtons }) {
 
@@ -9,6 +10,7 @@ function Settings({ navButtons }) {
         <div>
             <Navigation pathsWithButtons={navButtons} />
             <Heading title={title} />
+            <Security />
         </div>
     );
 }

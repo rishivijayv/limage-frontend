@@ -18,6 +18,18 @@ const theme = createMuiTheme({
     fontFamily: "'Raleway', sans-serif"
   },
   custom: {
+    centerContainer: {
+      textAlign: 'center'
+    },
+    button: {
+      color: defaultTheme.palette.common.white,
+      backgroundColor: defaultTheme.palette.common.black,
+      fontWeight: 'bold',
+      '&:hover': {
+          backgroundColor: defaultTheme.palette.common.black
+      },
+      marginRight: '10px'
+    },
     success: {
       color: '#00b359'
     },

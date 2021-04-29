@@ -13,7 +13,7 @@ import Labels from './Labels/Labels';
 import SavedImages from './SavedImages/SavedImages';
 import Upload from './Upload/Upload';
 import UploadedImages from './UploadedImages/UploadedImages';
-import Heading from './Utilities/Heading';
+import Heading from '../Utilities/Heading';
 
 import { makeStyles } from '@material-ui/core/styles';
 

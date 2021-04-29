@@ -18,15 +18,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 'auto',
         marginRight: 'auto',
     },
-    button: {
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.common.black,
-        fontWeight: 'bold',
-        '&:hover': {
-            backgroundColor: theme.palette.common.black
-        },
-        marginRight: '10px'
-    },
+    button: theme.custom.button,
     label: {
         marginBottom: '10px'
     },

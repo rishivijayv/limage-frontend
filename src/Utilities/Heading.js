@@ -5,9 +5,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         margin: '20px'
     },
-    header: {
-        textAlign: 'center'
-    },
+    header: theme.custom.centerContainer,
     title: {
         fontSize: '60px',
         fontWeight: '800',
