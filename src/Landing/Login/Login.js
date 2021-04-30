@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
@@ -14,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login(){
+    const history = useHistory();
     const classes = useStyles();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState(initPassword);
@@ -22,7 +24,7 @@ function Login(){
        <div className={classes.container}>
             <TextField className={classes.username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
             <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" /> <br />
-            <Button className={classes.button} variant="container" component="label" onClick={() => console.log("Loggin in")}>
+            <Button className={classes.button} onClick={() => history.push("/profile/rishivijayv")} variant="container" component="label">
                 Login
             </Button>
        </div>
