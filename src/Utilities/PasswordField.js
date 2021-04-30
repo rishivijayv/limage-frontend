@@ -66,5 +66,6 @@ export const initPassword = {
     text: ''
 };
 
+export const extractPassword = (passwordObject) => passwordObject.text;
 
 export default PasswordField;

@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import Heading from '../Utilities/Heading';
 import Login from './Login/Login'
+import Signup from './Signup/Signup';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,7 @@ function Landing(){
 
             <Switch>
                 <Route path="/signup">
-                    <h2>Signup coming soon!</h2>
+                    <Signup />
                 </Route>
                 <Route path="/">
                     <Login />

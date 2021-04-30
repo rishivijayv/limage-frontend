@@ -40,7 +40,6 @@ function Labels(){
 
     const navigateToLabel = (labelText) => {
         const labelName = labelText.substring(1, labelText.length - 1);
-        console.log(`${match.url}/${labelName}`);
         history.push(`${match.url}/${labelName}`);
     };
 
