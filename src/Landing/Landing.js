@@ -1,29 +1,26 @@
 import {
     Route,
-    Switch,
-    Router,
-    useRouteMatch
+    Switch
 } from 'react-router-dom';
 import Heading from '../Utilities/Heading';
 import Login from './Login/Login'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    container: theme.custom.centerContainer
+    container: theme.custom.centerContainer,
 }))
 
-function Landing(props){
+function Landing(){
     const classes = useStyles();
     const title = "~Limage~";
-    const match = useRouteMatch();
-    
+
     const landingLinks = [
         {
-            url: `${match.url}`,
+            url: '/',
             display: "Login"
         },
         {
-            url: `${match.url}/signup`,
+            url: '/signup',
             display: "Signup"
         }
     ];
@@ -34,10 +31,10 @@ function Landing(props){
 
 
             <Switch>
-                <Route path={`${match.path}/signup`}>
+                <Route path="/signup">
                     <h2>Signup coming soon!</h2>
                 </Route>
-                <Route path={`${match.path}`}>
+                <Route path="/">
                     <Login />
                 </Route>
             </Switch>

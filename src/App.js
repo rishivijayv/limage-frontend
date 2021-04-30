@@ -1,7 +1,6 @@
 import {
   BrowserRouter as Router,
   Route,
-  Redirect,
   Switch
 } from 'react-router-dom';
 import Landing from './Landing/Landing';
@@ -67,11 +66,8 @@ function App() {
           <Route path="/profile/:username">
             <User />
           </Route>
-          <Route path="/home">
+          <Route path="/">
             <Landing />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
           </Route>
         </Switch>
       </Router>
