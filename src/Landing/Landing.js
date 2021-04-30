@@ -10,7 +10,6 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     container: {
         ...theme.custom.centerContainer,
-        padding: theme.spacing(3),
     }
 }))
 

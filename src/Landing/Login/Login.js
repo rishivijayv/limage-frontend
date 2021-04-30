@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     button: theme.custom.button,
-    container: theme.custom.centerContainer,
     username: {
         margin: theme.spacing(1),
         width: '25ch'
@@ -21,7 +20,7 @@ function Login(){
     const [password, setPassword] = useState(initPassword);
 
    return (
-       <div className={classes.container}>
+       <div>
             <TextField className={classes.username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
             <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" /> <br />
             <Button className={classes.button} onClick={() => history.push("/profile/rishivijayv")} variant="container" component="label">
