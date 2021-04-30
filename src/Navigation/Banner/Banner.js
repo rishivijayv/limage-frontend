@@ -13,7 +13,7 @@ function Banner(){
 
     return (
         <Typography className={classes.heading} variant="h6" noWrap>
-            Limage
+            ~Limage~
         </Typography>
     );
 }
