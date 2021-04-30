@@ -34,18 +34,6 @@ function NavButtons({ pathsWithButtons }){
 
     return (
         <div>
-            {/* <IconButton onClick={() => history.push(paths.home)} className={classes.barButton} color="inherit">
-                <HomeIcon/>
-            </IconButton>
-            <IconButton onClick={() => history.push(paths.discover)} className={classes.barButton} color="inherit">
-                <SearchIcon />
-            </IconButton>
-            <IconButton onClick={() => history.push(paths.settings)} className={classes.barButton} color="inherit">
-                <SettingsIcon />
-            </IconButton>
-            <IconButton className={classes.barButton} color="inherit">
-                <ExitToAppIcon />
-            </IconButton> */}
             {buttonsToRender}
         </div>
     );

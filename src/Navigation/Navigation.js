@@ -27,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
             <AppBar position="static">
                 <Toolbar className={classes.bar}>
                     <Banner />
-
-                    {/* <div className={classes.navigationGroup}>
-                        <LabelDiscoverySearch />
-                    </div>   */}
-                    
                     <div className={classes.navigationGroup}>
                         <NavButtons pathsWithButtons={pathsWithButtons}/>
                     </div>

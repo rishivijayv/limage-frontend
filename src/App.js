@@ -1,6 +1,7 @@
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
   Switch
 } from 'react-router-dom';
 import Landing from './Landing/Landing';
@@ -16,7 +17,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     fontFamily: theme.typography.fontFamily,
-},
+  },
 }));
 
 // TODO: Replaced with proper protected routes once backend is up and running
@@ -33,7 +34,7 @@ const unauthenticatedNavButtons = [
 
 const authenticatedNavButtons = [
   { 
-      path: `/rishivijayv`, 
+      path: `/profile/rishivijayv`, 
       display: HomeIcon 
   },
   { 
@@ -63,11 +64,14 @@ function App() {
           <Route path={`/settings`}>
               <Settings navButtons={authenticatedNavButtons} />
           </Route>
-          <Route path="/:username">
+          <Route path="/profile/:username">
             <User />
           </Route>
-          <Route path="/">
+          <Route path="/home">
             <Landing />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/home" />
           </Route>
         </Switch>
       </Router>

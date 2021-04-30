@@ -41,8 +41,7 @@ function Heading({ title, links = [] }){
     const getOption = (optionUrl, optionName) => {
         return <NavLink exact 
                         className={classes.optionUrl} 
-                        activeClassName={classes.selectedOption}
-                        onClick={() => console.log(`Navigation to ${optionUrl}`)} 
+                        activeClassName={classes.selectedOption} 
                         to={optionUrl}> 
                     {optionName} 
                 </NavLink>

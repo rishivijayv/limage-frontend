@@ -69,11 +69,11 @@ function User(){
             <div className={classes.userContainer}>
                 <Heading title={username} links={userHeadingLinks} />
                 <Switch>
-                    <Route path={`${match.path}/labels`}>
-                        <Labels />
-                    </Route>
                     <Route path={`${match.path}/labels/:labelName`}>
                         <SavedImages />
+                    </Route>
+                    <Route path={`${match.path}/labels`}>
+                        <Labels />
                     </Route>
                     <Route path={`${match.path}/upload`}>
                         <Upload />

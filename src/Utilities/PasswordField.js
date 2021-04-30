@@ -61,4 +61,10 @@ function PasswordField({ passwordObject, passwordSetter, labelText }){
     );
 }
 
+export const initPassword = {
+    show: false,
+    text: ''
+};
+
+
 export default PasswordField;
