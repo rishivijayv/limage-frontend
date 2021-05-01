@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 // TODO: Replaced with proper protected routes once backend is up and running
 const unauthenticatedNavButtons = [
   {
-    path: '/login',
+    path: '/',
     display: "Login"
   }, 
   {
