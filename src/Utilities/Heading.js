@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Heading({ title, links = [] }){
+function Heading({ title, subtitle="", links = [] }){
     const classes = useStyles();
 
     const getOption = (optionUrl, optionName) => {
@@ -58,6 +58,8 @@ function Heading({ title, links = [] }){
     return (
         <div className={classes.header}>
             <div className={classes.title}>{title}</div>
+
+            {subtitle !== "" ? <h4>{subtitle}</h4> : null}
 
             <ul className={classes.options}>
                 {headingLinks}
