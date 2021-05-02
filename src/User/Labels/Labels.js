@@ -11,7 +11,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import SearchField from '../SearchField/SearchField';
+import SearchField from '../../Utilities/SearchField';
 
 const useStyles = makeStyles((theme) => ({
     labelCard: {

@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Backdrop from '@material-ui/core/Backdrop';
 import { userImages } from '../../TempData/TempData';
 
-import SearchField from '../SearchField/SearchField';
+import SearchField from '../../Utilities/SearchField';
 import Images from '../../Utilities/Images';
 
 const useStyles = makeStyles((theme) => ({
