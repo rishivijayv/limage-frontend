@@ -32,7 +32,7 @@ function Discover({ navButtons }){
     return (
         <div className={classes.discoverRoot}>
             <Navigation pathsWithButtons={navButtons} />
-            <Heading title="Discover" />
+            <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
             <div className={classes.actionArea}>
                 <TextField size="small" variant="outlined" label="Search for Labels" onChange={(e) => setLabelToDiscover(e.target.value)}/>
                 <Button variant="contained" 
