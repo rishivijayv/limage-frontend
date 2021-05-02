@@ -1,15 +1,9 @@
-import { makeStyles, fade } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Backdrop from '@material-ui/core/Backdrop';
 import { userImages } from '../../TempData/TempData';
-import { CardActions } from '@material-ui/core';
 
 import SearchField from '../SearchField/SearchField';
 import Images from '../../Utilities/Images';
