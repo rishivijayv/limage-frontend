@@ -12,40 +12,14 @@ import { userImages } from '../../TempData/TempData';
 import { CardActions } from '@material-ui/core';
 
 import SearchField from '../SearchField/SearchField';
+import Images from '../../Utilities/Images';
 
 const useStyles = makeStyles((theme) => ({
     gridList: {
         height: '100%',
         width: '100%'
     },
-    image: {
-        maxWidth: '100%',
-        height: '300px',
-    },
-    imageCard: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    imageActions: {
-        justifyContent: 'space-between',
-        '& b':{
-            marginLeft: '10px'
-        }
-    },
-    imageActionButton: {
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.20)
-        }
-    },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: theme.palette.common.white,
-    },
-    enlargedImage: {
-        maxWidth: '100%',
-        maxHeight: '100%',
-        border: `1px solid ${theme.palette.common.white}`
-    }
+    backdrop: theme.custom.backdrop
 }));
 
 const initResponse = {
@@ -60,7 +34,6 @@ function UploadedImages(){
     const [imageDeleteRequested, setImageDeleteRequested] = useState(false);
     const [imageDeleteResponse, setImageDeleteResponse] = useState(initResponse);
     const [labelFilter, setLabelFilter] = useState("");
-    const [enlargeImage, setEnlargeImage] = useState(null);
 
     const classes = useStyles();
 
@@ -90,51 +63,26 @@ function UploadedImages(){
         }
     };
 
-    const showEnlargedImage = (e, imageSource) => {
-        e.preventDefault();
-        setEnlargeImage(imageSource);
-    };
-
     const resetDeletion = () => {
         setImageDeleteRequested(false);
         setImageDeleteResponse(initResponse);
     };
 
+    const imageList = images.filter(image => image.label.startsWith(labelFilter)).map(filteredImage => ({ 
+        id: filteredImage.id,
+        img: filteredImage.img, 
+        displayLabel: `~${filteredImage.label}~`, 
+    }));
+
     return (
         <div>
             <SearchField label="Search by Label" onChange={(e) => setLabelFilter(e.target.value)}/>
             <br />
-            <Grid container spacing={2}>
-                {images
-                .filter(image => image.label.startsWith(labelFilter))
-                .map((image, index) => {
-                    return (
-                        <Grid item md={4} sm={6} xs={12} key={index}>
-                            <Card className={classes.imageCard}>
-                                <CardActionArea onClick={(e) => showEnlargedImage(e, image.img)}>
-                                    <CardMedia 
-                                        className={classes.image}
-                                        image={image.img}
-                                    />
-                                </CardActionArea>
-                                <CardActions className={classes.imageActions}>
-                                    <b>~{image.label}~</b>
-                                    <IconButton className={classes.imageActionButton} color="inherit" onClick={(e) => requestImageDeletion(e, image.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    );
-                })}
-            </Grid>
+            <Images imageList={imageList} onImageButtonClick={requestImageDeletion} actionIcon={DeleteIcon}/>
             <Backdrop open={imageDeleteRequested} onClick={() => resetDeletion()} className={classes.backdrop}>
                 {imageDeleteResponse.data == null && imageDeleteResponse.error == null ? <CircularProgress color="inherit"/> : null} 
                 {imageDeleteResponse.data != null ? <h1>Image Successfully Deleted.</h1> : null}
                 {imageDeleteResponse.error != null ? <h1>There was an error in deleting the image. Please try again</h1> : null}
-            </Backdrop>
-            <Backdrop open={enlargeImage != null} onClick={() => setEnlargeImage(null)} className={classes.backdrop}>
-                <img src={enlargeImage} className={classes.enlargedImage} />
             </Backdrop>
         </div>
     );

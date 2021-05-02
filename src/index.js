@@ -18,6 +18,10 @@ const theme = createMuiTheme({
     fontFamily: "'Raleway', sans-serif"
   },
   custom: {
+    backdrop: {
+      zIndex: defaultTheme.zIndex.drawer + 1,
+      color: defaultTheme.palette.common.white,
+    },
     centerContainer: {
       textAlign: 'center'
     },
