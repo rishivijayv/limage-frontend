@@ -37,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+/* 
+    imageList is a prop of the following structure:
+    {
+        id: ID of the image recieved in response from backend,
+        img: source of the image as obtained from backend,
+        displayLabel: label that is displayed on the image card
+    }
+*/
 function Images({ imageList, onImageButtonClick, actionIcon }){
     const [enlargeImage, setEnlargeImage] = useState(null);
     // Uppaer case to make sure it is rendered as a component
