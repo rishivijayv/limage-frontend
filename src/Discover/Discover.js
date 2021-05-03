@@ -36,7 +36,7 @@ function Discover({ navButtons }){
         const imagesForLabel = platformImages.filter(image => image.label.startsWith(labelToDiscover)).map(filteredImage => ({
             id: filteredImage.id,
             img: filteredImage.img,
-            displayLabel: `${filteredImage.label}`
+            displayLabel: `~${filteredImage.label}~`
         }));
 
         if(!oneSearchSubmitted){
