@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     userContainer: {
-        margin: '20px'
+        margin: '40px'
     },
 });
 
