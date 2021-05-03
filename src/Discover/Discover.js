@@ -51,13 +51,21 @@ function Discover({ navButtons }){
         console.log(`Saving image with id ${imageId}`);
     };
 
+    const searchOnEnterKey = (event) => {
+        const code = event.keyCode || event.which;
+
+        if(code === 13){
+            discoverImagesForLabel();
+        }
+    };
+
     return (
         <div>
             <Navigation pathsWithButtons={navButtons} />
             <div className={classes.discoverRoot}>
                 <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
                 <div className={classes.actionArea}>
-                    <TextField size="small" variant="outlined" label="Search for Labels" onChange={(e) => setLabelToDiscover(e.target.value)}/>
+                    <TextField size="small" variant="outlined" label="Search for Labels" onChange={(e) => setLabelToDiscover(e.target.value)} onKeyPress={(e) => searchOnEnterKey(e)}/>
                     <Button variant="contained" 
                             className={classes.button} 
                             startIcon={<KeyboardArrowRightIcon />} 
