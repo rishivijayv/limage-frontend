@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     discoverRoot: {
-        textAlign: 'center'
+        textAlign: 'center',
+        margin: '40px'
     },
     actionArea: {
         marginTop: '15px'
@@ -24,25 +25,51 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
 function Discover({ navButtons }){
     const classes = useStyles();
     const [labelToDiscover, setLabelToDiscover] = useState("");
+    const [oneSearchSubmitted, setOneSearchSubmitted] = useState(false);
+    const [imageList, setImageList] = useState([]);
+
+    const discoverImagesForLabel = () => {
+
+        const imagesForLabel = platformImages.filter(image => image.label.startsWith(labelToDiscover)).map(filteredImage => ({
+            id: filteredImage.id,
+            img: filteredImage.img,
+            displayLabel: `${filteredImage.label}`
+        }));
+
+        if(!oneSearchSubmitted){
+            setOneSearchSubmitted(true);
+        }
+
+        setImageList(imagesForLabel);
+    };
+
+    const saveImageToLabel = (e, imageId) => {
+        e.preventDefault();
+        console.log(`Saving image with id ${imageId}`);
+    };
 
     return (
-        <div className={classes.discoverRoot}>
+        <div>
             <Navigation pathsWithButtons={navButtons} />
-            <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
-            <div className={classes.actionArea}>
-                <TextField size="small" variant="outlined" label="Search for Labels" onChange={(e) => setLabelToDiscover(e.target.value)}/>
-                <Button variant="contained" 
-                        className={classes.button} 
-                        startIcon={<KeyboardArrowRightIcon />} 
-                        component="label" 
-                        key="discover-label-button"
-                        onClick={() => console.log(`Discovering ${labelToDiscover}`)}>
-                    Go
-                </Button>
+            <div className={classes.discoverRoot}>
+                <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
+                <div className={classes.actionArea}>
+                    <TextField size="small" variant="outlined" label="Search for Labels" onChange={(e) => setLabelToDiscover(e.target.value)}/>
+                    <Button variant="contained" 
+                            className={classes.button} 
+                            startIcon={<KeyboardArrowRightIcon />} 
+                            component="label" 
+                            key="discover-label-button"
+                            onClick={() => discoverImagesForLabel()}>
+                        Go
+                    </Button>
+                </div>
+                <br />
+                {oneSearchSubmitted && imageList.length === 0 ? <h3>Seems like there are no images for this label</h3> : null}
+                {imageList.length > 0 ? <Images imageList={imageList} onImageButtonClick={saveImageToLabel} actionIcon={SaveAltIcon}/> : null}
             </div>
 
         </div>
