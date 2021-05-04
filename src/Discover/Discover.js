@@ -48,7 +48,6 @@ function Discover({ navButtons }){
 
     const saveImageToLabel = (e, imageId) => {
         e.preventDefault();
-        console.log(`Saving image with id ${imageId}`);
     };
 
     const searchOnEnterKey = (event) => {
