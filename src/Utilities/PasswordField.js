@@ -12,10 +12,6 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         width: '25ch'
     },
-    password: {
-        marginBottom: '10px',
-        width: '300px'
-    },
 }))
 
 function PasswordField({ passwordObject, passwordSetter, labelText }){
