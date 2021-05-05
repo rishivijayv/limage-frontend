@@ -4,6 +4,7 @@ import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
 
 const useStyles = makeStyles((theme) => ({
     button: theme.custom.button,
@@ -26,19 +27,10 @@ function Signup(){
     const [password, setPassword] = useState(initPassword);
     const [confirmPassword, setConfirmPassword]  = useState(initPassword);
 
-    const isFieldEmpty = (field, fieldSetter) => {
-        if(field.text === ''){
-            fieldSetter({ ...field, ['error']: true });
-            return true;
-        }
-
-        return false;
-    };
-
     const resetAllErrors = () => {
-        setUsername({ ...username, ['error']: false });
-        setPassword({ ...password, ['error']: false })
-        setConfirmPassword({ ...confirmPassword, ['error']: false })
+        resetError(username, setUsername);
+        resetError(password, setPassword);
+        resetError(confirmPassword, setConfirmPassword);
     };
 
     const handleNewUserSubmit = () => {
