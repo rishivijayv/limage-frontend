@@ -12,9 +12,12 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         width: '25ch'
     },
+    errorIcon: {
+        color: theme.palette.error.main
+    }
 }))
 
-function PasswordField({ passwordObject, passwordSetter, labelText }){
+function PasswordField({ passwordObject, passwordSetter, labelText, error }){
     const classes = useStyles();
 
     const handlePasswordChange = (event, passwordObject, passwordSetter) => {
@@ -32,7 +35,7 @@ function PasswordField({ passwordObject, passwordSetter, labelText }){
 
     const labelWidth = labelText.length * 8.6
     return (
-        <FormControl className={classes.passwordContainer} variant="outlined">
+        <FormControl error={error} className={classes.passwordContainer} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">{labelText}</InputLabel>
             <OutlinedInput
             id="outlined-adornment-password"
@@ -42,6 +45,7 @@ function PasswordField({ passwordObject, passwordSetter, labelText }){
             endAdornment={
                 <InputAdornment position="end">
                 <IconButton
+                    className={error ? `${classes.errorIcon}` : ""}
                     aria-label="toggle password visibility"
                     onClick={() => handleClickShowPassword(passwordObject, passwordSetter)}
                     onMouseDown={(e) => handleMouseDownPassword(e)}
@@ -59,7 +63,8 @@ function PasswordField({ passwordObject, passwordSetter, labelText }){
 
 export const initPassword = {
     show: false,
-    text: ''
+    text: '',
+    error: false
 };
 
 export const extractPassword = (passwordObject) => passwordObject.text;

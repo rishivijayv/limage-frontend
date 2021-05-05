@@ -10,20 +10,49 @@ const useStyles = makeStyles((theme) => ({
     username: {
         margin: theme.spacing(1),
         width: '25ch'
+    },
+    errorText: {
+        color: theme.palette.error.main
     }
 }));
 
 function Login(){
     const history = useHistory();
     const classes = useStyles();
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState({
+        text: '',
+        error: false
+    });
     const [password, setPassword] = useState(initPassword);
+
+    const handleSubmit = () => {
+        const { show } = password;
+        const passwordText = password.text;
+        const usernameText = username.text;
+        let validEntries = true;
+
+        if(passwordText === ''){
+            setPassword({ show, text: passwordText, error: true});
+            validEntries = false;
+        }
+        
+        if(usernameText === ''){
+            setUsername({ text: usernameText, error: true });
+            validEntries = false;
+        }
+
+        if(validEntries){
+            history.push("/profile/rishivijayv");
+        }
+
+    };
 
    return (
        <div>
-            <TextField className={classes.username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)}/> <br />
-            <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" /> <br />
-            <Button className={classes.button} onClick={() => history.push("/profile/rishivijayv")} variant="container" component="label">
+            <TextField error={username.error} className={classes.username} label="Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value})}/> <br />
+            <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" error={password.error}/> <br />
+            {username.error || password.error ? <h5 className={classes.errorText}>Username and password cannot be empty</h5> : null}
+            <Button className={classes.button} onClick={() => handleSubmit()} variant="container" component="label">
                 Login
             </Button>
        </div>
