@@ -4,6 +4,7 @@ import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
 
 const useStyles = makeStyles((theme) => ({
     button: theme.custom.button,
@@ -25,23 +26,16 @@ function Login(){
     });
     const [password, setPassword] = useState(initPassword);
 
+
+
     const handleSubmit = () => {
-        const { show } = password;
-        const passwordText = password.text;
-        const usernameText = username.text;
-        let validEntries = true;
+        resetError(username, setUsername);
+        resetError(password, setPassword);
 
-        if(passwordText === ''){
-            setPassword({ show, text: passwordText, error: true});
-            validEntries = false;
-        }
-        
-        if(usernameText === ''){
-            setUsername({ text: usernameText, error: true });
-            validEntries = false;
-        }
+        const usernameEmpty = isFieldEmpty(username, setUsername);
+        const passwordEmpty = isFieldEmpty(password, setPassword);
 
-        if(validEntries){
+        if(!usernameEmpty && !passwordEmpty){
             history.push("/profile/rishivijayv");
         }
 
