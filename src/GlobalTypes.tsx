@@ -7,3 +7,13 @@ export type UserInputField = {
     text: string,
     error?: boolean
 };
+export type Image = {
+    id: number,
+    img: string,
+    displayLabel: string
+}
+
+export type HeadingLink =  {
+    url: string;
+    display: string;
+}

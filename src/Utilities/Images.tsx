@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles, fade, Theme } from '@material-ui/core/styles';
-import { ImageList, Image } from '../GlobalTypes';
+import { Image } from '../GlobalTypes';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { SvgIconTypeMap } from '@material-ui/core/SvgIcon/SvgIcon';
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 type ImagesProps = {
-    imageList: ImageList,
+    imageList: Image[],
     onImageButtonClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number) => Promise<void>,
     actionIcon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
 };
