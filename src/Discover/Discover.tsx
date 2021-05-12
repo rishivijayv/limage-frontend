@@ -8,9 +8,10 @@ import { platformImages } from '../TempData/TempData';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { NavButton, Image } from '../GlobalTypes';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     discoverRoot: {
         textAlign: 'center',
         margin: '40px'
@@ -25,11 +26,15 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Discover({ navButtons }){
+type DiscoverProps = {
+    navButtons: NavButton[]
+};
+
+function Discover({ navButtons }: DiscoverProps){
     const classes = useStyles();
     const [labelToDiscover, setLabelToDiscover] = useState("");
     const [oneSearchSubmitted, setOneSearchSubmitted] = useState(false);
-    const [imageList, setImageList] = useState([]);
+    const [imageList, setImageList] = useState<Image[]>([]);
 
     const discoverImagesForLabel = () => {
 
@@ -46,11 +51,17 @@ function Discover({ navButtons }){
         setImageList(imagesForLabel);
     };
 
-    const saveImageToLabel = (e, imageId) => {
-        e.preventDefault();
+    const timeout = (ms: number) => {
+        return new Promise(resolve => setTimeout(resolve, ms))
     };
 
-    const searchOnEnterKey = (event) => {
+    const saveImageToLabel = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number): Promise<void> => {
+        e.preventDefault();
+        await timeout(2000);
+        console.log("Saved Image");
+    };
+
+    const searchOnEnterKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
         const code = event.keyCode || event.which;
 
         if(code === 13){
