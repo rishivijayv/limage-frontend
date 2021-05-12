@@ -29,7 +29,7 @@ function NavButtons({ pathsWithButtons }: NavButtonsProps){
         if(buttonType === 'string'){
             return (
                 <Button onClick={() => history.push(buttonInfo.path)} className={classes.barButton} color="inherit">
-                    DisplayButton
+                    {DisplayButton}
                 </Button>
             );
         }else{

@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
+import { PasswordInputField } from '../../GlobalTypes'; 
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
@@ -24,8 +25,8 @@ function Signup(){
         text: '',
         error: false
     });
-    const [password, setPassword] = useState(initPassword);
-    const [confirmPassword, setConfirmPassword]  = useState(initPassword);
+    const [password, setPassword] = useState<PasswordInputField>(initPassword);
+    const [confirmPassword, setConfirmPassword]  = useState<PasswordInputField>(initPassword);
 
     const resetAllErrors = () => {
         resetError(username, setUsername);

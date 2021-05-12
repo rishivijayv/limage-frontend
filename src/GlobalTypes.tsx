@@ -5,11 +5,15 @@ import { SvgIconTypeMap } from "@material-ui/core/SvgIcon/SvgIcon";
 
 export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
-export type UserInputField = {
-    show?: boolean,
+export interface InputField {
     text: string,
     error: boolean
 };
+
+export interface PasswordInputField extends InputField {
+    show?: boolean
+}
+
 export type Image = {
     id: number,
     img: string,

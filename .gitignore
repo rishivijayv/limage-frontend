@@ -25,3 +25,6 @@ yarn-error.log*
 .vscode/
 
 idea.txt
+
+# Ignoring automatically generated .ts file for now. Can include it later
+src/react-app-env.d.ts

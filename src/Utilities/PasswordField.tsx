@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { StateSetter, UserInputField } from '../GlobalTypes';
+import { StateSetter, PasswordInputField } from '../GlobalTypes';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 type PasswordFieldProps = {
-    passwordObject: UserInputField,
-    passwordSetter: StateSetter<UserInputField>,
+    passwordObject: PasswordInputField,
+    passwordSetter: StateSetter<PasswordInputField>,
     labelText: string,
     error: boolean
 }
@@ -31,8 +31,8 @@ function PasswordField({ passwordObject, passwordSetter, labelText, error }: Pas
 
     const handlePasswordChange = (
         event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, 
-        passwordObject: UserInputField, 
-        passwordSetter: StateSetter<UserInputField>) => {
+        passwordObject: PasswordInputField, 
+        passwordSetter: StateSetter<PasswordInputField>) => {
         passwordSetter({ ...passwordObject, ['text']:  event.target.value });
     };
 
@@ -40,7 +40,7 @@ function PasswordField({ passwordObject, passwordSetter, labelText, error }: Pas
         event.preventDefault();
     }; 
 
-    const handleClickShowPassword = (passwordObject: UserInputField, passwordSetter: StateSetter<UserInputField>) => {
+    const handleClickShowPassword = (passwordObject: PasswordInputField, passwordSetter: StateSetter<PasswordInputField>) => {
         const toggleShow = !passwordObject.show
         passwordSetter({ ...passwordObject, ['show']: toggleShow });
     };
@@ -79,6 +79,6 @@ export const initPassword = {
     error: false
 };
 
-export const extractPassword = (passwordObject: UserInputField) => passwordObject.text;
+export const extractPassword = (passwordObject: PasswordInputField) => passwordObject.text;
 
 export default PasswordField;

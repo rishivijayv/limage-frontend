@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { UserInputField } from '../../GlobalTypes';
+import { InputField } from '../../GlobalTypes';
 import { resetError, isFieldEmpty } from '../../Utilities/HelperFunctions';
 
 
@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Security(){
     const classes = useStyles();
 
-    const [oldPassword, setOldPassword] = useState<UserInputField>(initPassword);
-    const [newPassword, setNewPassword] = useState<UserInputField>(initPassword);
-    const [confirmPassword, setConfirmPassword] = useState<UserInputField>(initPassword);
+    const [oldPassword, setOldPassword] = useState<InputField>(initPassword);
+    const [newPassword, setNewPassword] = useState<InputField>(initPassword);
+    const [confirmPassword, setConfirmPassword] = useState<InputField>(initPassword);
 
     const handleChangeRequest = () => {
         resetError(oldPassword, setOldPassword);
