@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     heading: {
-        fontWeight: '900'
+        fontWeight: 900
     }
 });
 

@@ -1,12 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import Banner from './Banner/Banner';
 import NavButtons from './NavButtons/NavButtons';
+import { NavButton } from '../GlobalTypes';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     navigation: {
         minWidth: '560px'
     },
@@ -19,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  function Navigation({ pathsWithButtons }){
+  type NavigationProps = {
+      pathsWithButtons: NavButton[]
+  }
+
+  function Navigation({ pathsWithButtons }: NavigationProps){
     const classes = useStyles();
 
     return (
