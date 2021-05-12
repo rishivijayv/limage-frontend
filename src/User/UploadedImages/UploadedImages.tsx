@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -8,7 +8,7 @@ import { userImages } from '../../TempData/TempData';
 import SearchField from '../../Utilities/SearchField';
 import Images from '../../Utilities/Images';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     gridList: {
         height: '100%',
         width: '100%'
