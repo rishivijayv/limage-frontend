@@ -2,8 +2,13 @@
 import Heading from '../Utilities/Heading';
 import Navigation from '../Navigation/Navigation';
 import Security from './Security/Security';
+import { NavButton } from '../GlobalTypes';
 
-function Settings({ navButtons }) {
+type SettingsProps = {
+    navButtons: NavButton[]
+};
+
+function Settings({ navButtons }: SettingsProps) {
 
     const title = "Settings"
     return (
