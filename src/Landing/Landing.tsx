@@ -6,9 +6,9 @@ import {
 import Heading from '../Utilities/Heading';
 import Login from './Login/Login'
 import Signup from './Signup/Signup';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     container: theme.custom.centerContainer,
     discoverPrompt: {
         marginTop: '35px',

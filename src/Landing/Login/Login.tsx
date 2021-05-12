@@ -3,10 +3,10 @@ import { useState } from 'react';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
     username: {
         margin: theme.spacing(1),
@@ -46,7 +46,7 @@ function Login(){
             <TextField error={username.error} className={classes.username} label="Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value})}/> <br />
             <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" error={password.error}/> <br />
             {username.error || password.error ? <h5 className={classes.errorText}>Username and password cannot be empty</h5> : null}
-            <Button className={classes.button} onClick={() => handleSubmit()} variant="container" component="label">
+            <Button className={classes.button} onClick={() => handleSubmit()} variant="contained" component="label">
                 Login
             </Button>
        </div>
