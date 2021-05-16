@@ -1,11 +1,28 @@
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { gql, useMutation } from "@apollo/client";
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
 import { PasswordInputField } from '../../GlobalTypes'; 
+
+const SIGN_UP = gql`
+    mutation Signup($username: String!, $password: String!){
+        signup(credentials:{username: $username, password: $password}){
+            user{
+                id,
+                username,
+                createdAt
+            },
+            errors{
+                fieldName
+                description
+            }
+        }
+    }
+`;
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
@@ -20,7 +37,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function Signup(){
     const classes = useStyles();
-    const history = useHistory();
+    // const history = useHistory();
+    const [signup] = useMutation(SIGN_UP);
     const [username, setUsername] = useState({
         text: '',
         error: false
@@ -34,16 +52,32 @@ function Signup(){
         resetError(confirmPassword, setConfirmPassword);
     };
 
-    const handleNewUserSubmit = () => {
+    const handleNewUserSubmit = async () => {
+        
         resetAllErrors();
 
         const usernameEmpty = isFieldEmpty(username, setUsername);
         const passwordEmpty = isFieldEmpty(password, setPassword);
         const confirmPasswordEmpty = isFieldEmpty(confirmPassword, setConfirmPassword);
 
-        if(!usernameEmpty && !passwordEmpty && !confirmPasswordEmpty){
-            history.push("/profile/rishivijayv")
+        if(usernameEmpty || passwordEmpty || confirmPasswordEmpty){
+            return;
         }
+
+        let signupResponse;
+        try{
+            signupResponse = await signup({
+                variables: {
+                    username: username.text,
+                    password: password.text
+                }
+            });
+        }catch(e){
+            console.log(e)
+        }
+        
+
+        console.log("Signed up successfully");
     };
 
     const errorInForm = username.error || password.error || confirmPassword.error;
