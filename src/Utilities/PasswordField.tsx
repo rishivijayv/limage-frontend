@@ -1,4 +1,5 @@
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -69,6 +70,7 @@ function PasswordField({ passwordObject, passwordSetter, labelText, error }: Pas
             }
             labelWidth={labelWidth}
             />
+            { passwordObject.error ? <FormHelperText> { passwordObject.helperText } </FormHelperText> : null }
         </FormControl>
     );
 }
@@ -76,7 +78,8 @@ function PasswordField({ passwordObject, passwordSetter, labelText, error }: Pas
 export const initPassword = {
     show: false,
     text: '',
-    error: false
+    error: false,
+    helperText: null
 };
 
 export const extractPassword = (passwordObject: PasswordInputField) => passwordObject.text;

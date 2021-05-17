@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
-import { PasswordInputField } from '../../GlobalTypes'; 
+import { PasswordInputField, InputField } from '../../GlobalTypes'; 
 import { useSignupMutation } from "../../generated/graphql";
 
 
@@ -24,9 +24,10 @@ function Signup(){
     const classes = useStyles();
     // const history = useHistory();
     const [signup, { loading }] = useSignupMutation();
-    const [username, setUsername] = useState({
+    const [username, setUsername] = useState<InputField>({
         text: '',
-        error: false
+        error: false,
+        helperText: null
     });
     const [password, setPassword] = useState<PasswordInputField>(initPassword);
     const [confirmPassword, setConfirmPassword]  = useState<PasswordInputField>(initPassword);

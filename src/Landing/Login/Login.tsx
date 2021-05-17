@@ -5,7 +5,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
-import { PasswordInputField } from '../../GlobalTypes';
+import { PasswordInputField, InputField, StateSetter } from '../../GlobalTypes';
+import { useLoginMutation } from '../../generated/graphql';
+
+type LoginStateObject<T> = {
+    state: T,
+    setState: StateSetter<T>
+};
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
@@ -21,34 +27,66 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Login(){
     const history = useHistory();
     const classes = useStyles();
-    const [username, setUsername] = useState({
+    const [login, { loading }] = useLoginMutation();
+    const [username, setUsername] = useState<InputField>({
         text: '',
-        error: false
+        error: false,
+        helperText: null
     });
     const [password, setPassword] = useState<PasswordInputField>(initPassword);
+    const [loginServerError, setLoginServerError] = useState(false);
+
+    const fieldMap: Record<string, LoginStateObject<InputField>> = {
+        "username": { state: username, setState: setUsername },
+        "password": { state: password, setState: setPassword }
+    };
 
 
-
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         resetError(username, setUsername);
         resetError(password, setPassword);
 
         const usernameEmpty = isFieldEmpty(username, setUsername);
         const passwordEmpty = isFieldEmpty(password, setPassword);
 
-        if(!usernameEmpty && !passwordEmpty){
-            history.push("/profile");
+        if(usernameEmpty || passwordEmpty){
+            return;
         }
+
+        try {
+            const response = await login({
+                variables: {
+                    username: username.text,
+                    password: password.text
+                }
+            });
+            
+            if(response.data?.login.errors){
+                response.data.login.errors.forEach(error => {
+                    const { state, setState } = fieldMap[error.fieldName];
+                    setState({ ...state, ['helperText']: error.description, ['error']: true });
+                });
+
+                return
+            }
+
+            history.push("/profile");
+
+        }catch(e) {
+            setLoginServerError(true);
+        }
+
 
     };
 
    return (
        <div>
-            <TextField error={username.error} className={classes.username} label="Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value})}/> <br />
+            <TextField error={username.error} helperText={username.helperText} className={classes.username} label="Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value})}/> <br />
             <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" error={password.error}/> <br />
-            {username.error || password.error ? <h5 className={classes.errorText}>Username and password cannot be empty</h5> : null}
-            <Button className={classes.button} onClick={() => handleSubmit()} variant="contained" component="label">
-                Login
+            {/* {username.error || password.error ? <h5 className={classes.errorText}>Username and password cannot be empty</h5> : null} */}
+            { loginServerError ? <h5>Something went wrong. Please try again.</h5> : null } 
+            <Button disabled={loading} className={classes.button} onClick={() => handleSubmit()} variant="contained" component="label">
+                { loading ? "Logging in..." : "Login" }
             </Button>
        </div>
    );

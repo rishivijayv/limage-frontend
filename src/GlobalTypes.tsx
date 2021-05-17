@@ -7,7 +7,8 @@ export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
 export interface InputField {
     text: string,
-    error: boolean
+    error: boolean,
+    helperText: string | null
 };
 
 export interface PasswordInputField extends InputField {

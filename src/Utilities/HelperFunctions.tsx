@@ -23,5 +23,5 @@ export function isFieldEmpty(stateVariable: InputField, stateVariableSetter: Sta
  * @param {StateSetter<T extends InputField>} stateVariableSetter 
  */
 export function resetError(stateVariable: InputField, stateVariableSetter: StateSetter<InputField | PasswordInputField>){
-    stateVariableSetter({ ...stateVariable, ['error']: false});
+    stateVariableSetter({ ...stateVariable, ['error']: false, ['helperText']: null});
 }
