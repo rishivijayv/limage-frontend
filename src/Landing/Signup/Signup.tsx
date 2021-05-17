@@ -4,25 +4,10 @@ import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { gql, useMutation } from "@apollo/client";
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
 import { PasswordInputField } from '../../GlobalTypes'; 
+import { useSignupMutation } from "../../generated/graphql";
 
-const SIGN_UP = gql`
-    mutation Signup($username: String!, $password: String!){
-        signup(credentials:{username: $username, password: $password}){
-            user{
-                id,
-                username,
-                createdAt
-            },
-            errors{
-                fieldName
-                description
-            }
-        }
-    }
-`;
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
@@ -38,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Signup(){
     const classes = useStyles();
     // const history = useHistory();
-    const [signup] = useMutation(SIGN_UP);
+    const [signup, { loading }] = useSignupMutation();
     const [username, setUsername] = useState({
         text: '',
         error: false
@@ -64,9 +49,8 @@ function Signup(){
             return;
         }
 
-        let signupResponse;
         try{
-            signupResponse = await signup({
+            await signup({
                 variables: {
                     username: username.text,
                     password: password.text
@@ -88,8 +72,8 @@ function Signup(){
              <PasswordField error={password.error} passwordObject={password} passwordSetter={setPassword} labelText="Password" /> <br />
              <PasswordField error={confirmPassword.error} passwordObject={confirmPassword} passwordSetter={setConfirmPassword} labelText="Confirm Password" /> <br />
              {errorInForm ? <h5 className={classes.errorText}>All fields are mandatory.</h5> : null}
-             <Button className={classes.button} onClick={() => handleNewUserSubmit()} variant="contained" component="label">
-                 Signup
+             <Button disabled={loading} className={classes.button} onClick={() => handleNewUserSubmit()} variant="contained" component="label">
+                 {loading ? "Siging up..." : "Sign up"}
              </Button>
         </div>
     );

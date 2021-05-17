@@ -20,6 +20,12 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 
 function createCustomTheme(options: ThemeOptions) {
   return createMuiTheme({
+    palette: {
+      action: {
+        disabledBackground: defaultTheme.palette.common.black,
+        disabled: defaultTheme.palette.common.white
+      }
+    },
     overrides: {
       MuiBreadcrumbs: {
         separator: {
