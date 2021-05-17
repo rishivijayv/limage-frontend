@@ -33,7 +33,7 @@ const unauthenticatedNavButtons = [
 
 const authenticatedNavButtons = [
   { 
-      path: `/profile/rishivijayv`, 
+      path: '/profile', 
       display: HomeIcon 
   },
   { 
@@ -63,7 +63,7 @@ function App() {
           <Route path={`/settings`}>
               <Settings navButtons={authenticatedNavButtons} />
           </Route>
-          <Route path="/profile/:username">
+          <Route path="/profile">
             <User />
           </Route>
           <Route path="/">

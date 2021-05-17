@@ -37,7 +37,7 @@ function Login(){
         const passwordEmpty = isFieldEmpty(password, setPassword);
 
         if(!usernameEmpty && !passwordEmpty){
-            history.push("/profile/rishivijayv");
+            history.push("/profile");
         }
 
     };

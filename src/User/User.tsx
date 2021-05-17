@@ -3,7 +3,6 @@ import {
     Switch,
     Route,
     useRouteMatch,
-    useParams
 } from 'react-router-dom';import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
@@ -23,14 +22,9 @@ const useStyles = makeStyles({
     },
 });
 
-type RouteParams = {
-    username: string
-};
-
 function User(){
     const classes = useStyles();
     const match = useRouteMatch();
-    const { username } = useParams<RouteParams>();
 
     
     
@@ -72,7 +66,7 @@ function User(){
         <div>
             <Navigation pathsWithButtons={authenticatedNavButtons} />
             <div className={classes.userContainer}>
-                <Heading title={username} links={userHeadingLinks} />
+                <Heading title={"rishivijayv"} links={userHeadingLinks} />
                 <Switch>
                     <Route path={`${match.path}/labels/:labelName`}>
                         <SavedImages />
