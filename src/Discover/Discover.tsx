@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import Navigation from '../Navigation/Navigation';
 import Images from '../Utilities/Images';
 import Heading from '../Utilities/Heading';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +8,7 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { NavButton, Image } from '../GlobalTypes';
+import { Image } from '../GlobalTypes';
 
 const useStyles = makeStyles((theme: Theme) => ({
     discoverRoot: {
@@ -26,11 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 }));
 
-type DiscoverProps = {
-    navButtons: NavButton[]
-};
-
-function Discover({ navButtons }: DiscoverProps){
+function Discover(){
     const classes = useStyles();
     const [labelToDiscover, setLabelToDiscover] = useState("");
     const [oneSearchSubmitted, setOneSearchSubmitted] = useState(false);
@@ -71,7 +66,6 @@ function Discover({ navButtons }: DiscoverProps){
 
     return (
         <div>
-            <Navigation pathsWithButtons={navButtons} />
             <div className={classes.discoverRoot}>
                 <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
                 <div className={classes.actionArea}>

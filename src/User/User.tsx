@@ -3,11 +3,7 @@ import {
     Switch,
     Route,
     useRouteMatch,
-} from 'react-router-dom';import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SearchIcon from '@material-ui/icons/Search';
-import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Navigation from '../Navigation/Navigation';
+} from 'react-router-dom';
 import Labels from './Labels/Labels';
 import SavedImages from './SavedImages/SavedImages';
 import Upload from './Upload/Upload';
@@ -26,26 +22,6 @@ function User(){
     const classes = useStyles();
     const match = useRouteMatch();
 
-    
-    
-    const authenticatedNavButtons = [
-        { 
-            path: `${match.url}`, 
-            display: HomeIcon 
-        },
-        { 
-            path: '/discover', 
-            display: SearchIcon 
-        },
-        { 
-            path: '/settings', 
-            display: SettingsIcon 
-        },
-        { 
-            path: '/', 
-            display: ExitToAppIcon 
-        }
-    ]
 
     const userHeadingLinks= [
         {
@@ -64,7 +40,6 @@ function User(){
 
     return (           
         <div>
-            <Navigation pathsWithButtons={authenticatedNavButtons} />
             <div className={classes.userContainer}>
                 <Heading title={"rishivijayv"} links={userHeadingLinks} />
                 <Switch>
