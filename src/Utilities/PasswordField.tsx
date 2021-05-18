@@ -24,10 +24,11 @@ type PasswordFieldProps = {
     passwordObject: PasswordInputField,
     passwordSetter: StateSetter<PasswordInputField>,
     labelText: string,
-    error: boolean
+    error: boolean,
+    onBlur?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>
 }
 
-function PasswordField({ passwordObject, passwordSetter, labelText, error }: PasswordFieldProps){
+function PasswordField({ passwordObject, passwordSetter, labelText, error, onBlur }: PasswordFieldProps){
     const classes = useStyles();
 
     const handlePasswordChange = (
@@ -54,6 +55,7 @@ function PasswordField({ passwordObject, passwordSetter, labelText, error }: Pas
             id="outlined-adornment-password"
             type={passwordObject.show ? 'text' : 'password'}
             value={passwordObject.text}
+            onBlur={onBlur}
             onChange={(e) => handlePasswordChange(e, passwordObject, passwordSetter)}
             endAdornment={
                 <InputAdornment position="end">

@@ -5,13 +5,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
-import { PasswordInputField, InputField, StateSetter } from '../../GlobalTypes';
+import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes';
 import { useLoginMutation } from '../../generated/graphql';
 
-type LoginStateObject<T> = {
-    state: T,
-    setState: StateSetter<T>
-};
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     button: theme.custom.button,
@@ -36,7 +33,7 @@ function Login(){
     const [password, setPassword] = useState<PasswordInputField>(initPassword);
     const [loginServerError, setLoginServerError] = useState(false);
 
-    const fieldMap: Record<string, LoginStateObject<InputField>> = {
+    const fieldMap: Record<string, StateObject<InputField>> = {
         "username": { state: username, setState: setUsername },
         "password": { state: password, setState: setPassword }
     };

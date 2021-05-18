@@ -1,11 +1,11 @@
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
-import { PasswordInputField, InputField } from '../../GlobalTypes'; 
+import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes'; 
 import { useSignupMutation } from "../../generated/graphql";
 
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function Signup(){
     const classes = useStyles();
-    // const history = useHistory();
+    const history = useHistory();
     const [signup, { loading }] = useSignupMutation();
     const [username, setUsername] = useState<InputField>({
         text: '',
@@ -31,6 +31,13 @@ function Signup(){
     });
     const [password, setPassword] = useState<PasswordInputField>(initPassword);
     const [confirmPassword, setConfirmPassword]  = useState<PasswordInputField>(initPassword);
+    const [signupServerError, setSignupServerError] = useState(false);
+
+    const fieldMap: Record<string, StateObject<InputField>> = {
+        "username": { state: username, setState: setUsername },
+        "password": { state: password, setState: setPassword },
+        "confirmPassword": { state: confirmPassword, setState: setConfirmPassword }
+    };
 
     const resetAllErrors = () => {
         resetError(username, setUsername);
@@ -39,40 +46,67 @@ function Signup(){
     };
 
     const handleNewUserSubmit = async () => {
-        
-        resetAllErrors();
+    
 
-        const usernameEmpty = isFieldEmpty(username, setUsername);
-        const passwordEmpty = isFieldEmpty(password, setPassword);
-        const confirmPasswordEmpty = isFieldEmpty(confirmPassword, setConfirmPassword);
+        const usernameError = isFieldEmpty(username, setUsername) || username.error;
+        const passwordError = isFieldEmpty(password, setPassword) || password.error;
+        const confirmPasswordError = isFieldEmpty(confirmPassword, setConfirmPassword) || confirmPassword.error;
 
-        if(usernameEmpty || passwordEmpty || confirmPasswordEmpty){
+        if(usernameError || passwordError || confirmPasswordError){
             return;
         }
 
+        resetAllErrors();
+
         try{
-            await signup({
+            const response = await signup({
                 variables: {
                     username: username.text,
                     password: password.text
                 }
             });
+
+            if(response.data?.signup.errors){
+                response.data.signup.errors.forEach(error => {
+                    const { state, setState } = fieldMap[error.fieldName];
+                    setState({ ...state, ['helperText']: error.description, ['error']: true });
+                });
+
+                return;
+            }
+
+            history.push("/profile");
         }catch(e){
-            console.log(e)
+            setSignupServerError(true);
         }
         
 
         console.log("Signed up successfully");
     };
 
-    const errorInForm = username.error || password.error || confirmPassword.error;
+    const validateUsernameInput = (input: string) => {
+        resetError(username, setUsername);
+        if(!/^[a-zA-Z0-9]*$/.test(input)){
+            setUsername({ ...username, ['error']: true, ['helperText']: "Only numbers and letters are allowed" });
+        }
+    }
+
+    const checkPasswordsMatch = () => {
+        resetError(confirmPassword, setConfirmPassword);
+        if(password.text !== confirmPassword.text){
+            setConfirmPassword({ ...confirmPassword, ['error']: true, ['helperText']: "The passwords do not match" });
+        }
+    }
 
     return (
         <div>
-             <TextField error={username.error} className={classes.username} label="New Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value })}/> <br />
+             <TextField error={username.error} className={classes.username} helperText={username.helperText}
+                        label="New Username" variant="outlined" 
+                        value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value })}
+                        onBlur={(e) => validateUsernameInput(e.target.value)}/> <br />
              <PasswordField error={password.error} passwordObject={password} passwordSetter={setPassword} labelText="Password" /> <br />
-             <PasswordField error={confirmPassword.error} passwordObject={confirmPassword} passwordSetter={setConfirmPassword} labelText="Confirm Password" /> <br />
-             {errorInForm ? <h5 className={classes.errorText}>All fields are mandatory.</h5> : null}
+             <PasswordField error={confirmPassword.error} passwordObject={confirmPassword} passwordSetter={setConfirmPassword} labelText="Confirm Password" onBlur={() => checkPasswordsMatch()}/> <br />
+             {signupServerError ? <h5>Something went wrong. Please try again.</h5> : null}
              <Button disabled={loading} className={classes.button} onClick={() => handleNewUserSubmit()} variant="contained" component="label">
                  {loading ? "Siging up..." : "Sign up"}
              </Button>

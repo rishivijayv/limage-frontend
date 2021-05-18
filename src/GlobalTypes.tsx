@@ -34,3 +34,8 @@ export type NavButton = {
     path: string;
     display: OverridableComponent<SvgIconTypeMap<{}, "svg">> | string;
 }
+
+export type StateObject<T> = {
+    state: T,
+    setState: StateSetter<T>
+};
