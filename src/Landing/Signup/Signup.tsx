@@ -4,7 +4,7 @@ import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
+import { isFieldEmpty, mapErrorToField, resetError } from '../../Utilities/HelperFunctions';
 import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes'; 
 import { useSignupMutation } from "../../generated/graphql";
 
@@ -67,11 +67,7 @@ function Signup(){
             });
 
             if(response.data?.signup.errors){
-                response.data.signup.errors.forEach(error => {
-                    const { state, setState } = fieldMap[error.fieldName];
-                    setState({ ...state, ['helperText']: error.description, ['error']: true });
-                });
-
+                mapErrorToField(response.data.signup.errors, fieldMap);
                 return;
             }
 

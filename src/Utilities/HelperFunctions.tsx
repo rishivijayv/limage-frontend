@@ -1,4 +1,5 @@
-import { StateSetter, InputField, PasswordInputField } from '../GlobalTypes';
+import { StateSetter, InputField, PasswordInputField, StateObject } from '../GlobalTypes';
+import { InputError } from '../generated/graphql';
 
 
 /**
@@ -24,4 +25,16 @@ export function isFieldEmpty(stateVariable: InputField, stateVariableSetter: Sta
  */
 export function resetError(stateVariable: InputField, stateVariableSetter: StateSetter<InputField | PasswordInputField>){
     stateVariableSetter({ ...stateVariable, ['error']: false, ['helperText']: null});
+}
+
+/**
+ * Maps the error received from the server to the respective input field
+ * @param {InputError[]} errors 
+ * @param {Record<string, StateObject<InputField>>} fieldMap 
+ */
+export function mapErrorToField(errors: InputError[], fieldMap: Record<string, StateObject<InputField>>){
+    errors.forEach(error => {
+        const { state, setState } = fieldMap[error.fieldName];
+        setState({ ...state, ['helperText']: error.description, ['error']: true });
+    });
 }

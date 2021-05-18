@@ -4,7 +4,7 @@ import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { isFieldEmpty, resetError } from '../../Utilities/HelperFunctions';
+import { isFieldEmpty, resetError, mapErrorToField } from '../../Utilities/HelperFunctions';
 import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes';
 import { useLoginMutation } from '../../generated/graphql';
 
@@ -59,12 +59,8 @@ function Login(){
             });
             
             if(response.data?.login.errors){
-                response.data.login.errors.forEach(error => {
-                    const { state, setState } = fieldMap[error.fieldName];
-                    setState({ ...state, ['helperText']: error.description, ['error']: true });
-                });
-
-                return
+                mapErrorToField(response.data.login.errors, fieldMap);
+                return;
             }
 
             history.push("/profile");
@@ -80,7 +76,6 @@ function Login(){
        <div>
             <TextField error={username.error} helperText={username.helperText} className={classes.username} label="Username" variant="outlined" value={username.text} onChange={(e) => setUsername({ ...username, ['text']: e.target.value})}/> <br />
             <PasswordField passwordObject={password} passwordSetter={setPassword} labelText="Password" error={password.error}/> <br />
-            {/* {username.error || password.error ? <h5 className={classes.errorText}>Username and password cannot be empty</h5> : null} */}
             { loginServerError ? <h5>Something went wrong. Please try again.</h5> : null } 
             <Button disabled={loading} className={classes.button} onClick={() => handleSubmit()} variant="contained" component="label">
                 { loading ? "Logging in..." : "Login" }
