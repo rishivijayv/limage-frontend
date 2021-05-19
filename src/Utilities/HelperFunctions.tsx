@@ -54,7 +54,6 @@ export function useAuthorizationCheck(): Pick<User, "username" | "id"> | null{
         if(!loading && !data?.me){
             history.push(`/?next=${history.location.pathname}`);
         }else if(!loading && data?.me){
-            // Means we are not loading and there is a user logged in
             setUser(data?.me);
         }
     }, [loading, data]);
