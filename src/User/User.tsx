@@ -9,6 +9,7 @@ import SavedImages from './SavedImages/SavedImages';
 import Upload from './Upload/Upload';
 import UploadedImages from './UploadedImages/UploadedImages';
 import Heading from '../Utilities/Heading';
+import Navigation from '../Navigation/Navigation';
 import { useMeQuery } from '../generated/graphql';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -51,6 +52,7 @@ function User(){
 
     return (           
         <div>
+            <Navigation />
             <div className={classes.userContainer}>
                 <Heading title={username!} links={userHeadingLinks} />
                 <Switch>

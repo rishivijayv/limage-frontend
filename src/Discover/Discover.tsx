@@ -7,6 +7,7 @@ import { platformImages } from '../TempData/TempData';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Button from '@material-ui/core/Button';
+import Navigation from '../Navigation/Navigation';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Image } from '../GlobalTypes';
 
@@ -66,6 +67,7 @@ function Discover(){
 
     return (
         <div>
+            <Navigation />
             <div className={classes.discoverRoot}>
                 <Heading title="Discover" subtitle="Explore images for a label of your choice"/>
                 <div className={classes.actionArea}>
