@@ -33,6 +33,8 @@ export type Undefineable<T> = T | undefined;
 export type NavButton = {
     path: string;
     display: OverridableComponent<SvgIconTypeMap<{}, "svg">> | string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disable?: boolean;
 }
 
 export type StateObject<T> = {

@@ -25,16 +25,27 @@ function NavButtons({ pathsWithButtons }: NavButtonsProps){
     const buttonsToRender = pathsWithButtons.map((buttonInfo: NavButton) => {
         const DisplayButton = buttonInfo.display
         const buttonType = typeof buttonInfo.display
+        let onClick = undefined;
+
+        if(buttonInfo.onClick){
+            const customOnClick = buttonInfo.onClick;
+            onClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                await customOnClick(event);
+                history.push(buttonInfo.path);
+            }
+        }else {
+            onClick = () => history.push(buttonInfo.path);
+        }
 
         if(buttonType === 'string'){
             return (
-                <Button onClick={() => history.push(buttonInfo.path)} className={classes.barButton} color="inherit">
+                <Button onClick={onClick} className={classes.barButton} color="inherit">
                     {DisplayButton}
                 </Button>
             );
         }else{
             return (
-                <IconButton onClick={() => history.push(buttonInfo.path)} className={classes.barButton} color="inherit">
+                <IconButton onClick={onClick} className={classes.barButton} color="inherit">
                     <DisplayButton />
                 </IconButton>
             );

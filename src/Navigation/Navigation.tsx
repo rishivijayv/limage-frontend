@@ -4,11 +4,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Banner from './Banner/Banner';
 import NavButtons from './NavButtons/NavButtons';
 import { NavButton } from '../GlobalTypes';
-import { useMeQuery } from '../generated/graphql';
+import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 import HomeIcon from '@material-ui/icons/Home';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useApolloClient } from '@apollo/client';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -47,16 +48,28 @@ const useStyles = makeStyles((theme: Theme) => ({
     { 
         path: '/settings', 
         display: SettingsIcon 
-    },
-    { 
-        path: '/', 
-        display: ExitToAppIcon 
     }
   ]
 
   function Navigation(){
     const classes = useStyles();
     const { data, loading } = useMeQuery();
+    const [logout, { loading: logoutLoading }] = useLogoutMutation();
+    const client = useApolloClient();
+
+    // Manually adding logout button to customize onClick functionality
+    if(authenticatedNavButtons.find(button => button.path === '/') === undefined){
+        authenticatedNavButtons.push({
+            path: '/',
+            display: ExitToAppIcon,
+            onClick: async () => {
+                await logout();
+                await client.resetStore();
+            },
+            disable: logoutLoading
+        });
+    }
+
 
     let navButtons: NavButton[] = [];
 
