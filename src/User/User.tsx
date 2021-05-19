@@ -9,7 +9,7 @@ import SavedImages from './SavedImages/SavedImages';
 import Upload from './Upload/Upload';
 import UploadedImages from './UploadedImages/UploadedImages';
 import Heading from '../Utilities/Heading';
-
+import { useMeQuery } from '../generated/graphql';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -21,7 +21,18 @@ const useStyles = makeStyles({
 function User(){
     const classes = useStyles();
     const match = useRouteMatch();
+    const { loading, data } = useMeQuery();
+    
 
+    let username;
+    if(loading){
+        return <h1>Loading...</h1>
+    }
+    if(!loading && !data?.me){
+        return <h1> You are not logged in</h1>
+    }else{
+        username = data?.me?.username;
+    }
 
     const userHeadingLinks= [
         {
@@ -41,7 +52,7 @@ function User(){
     return (           
         <div>
             <div className={classes.userContainer}>
-                <Heading title={"rishivijayv"} links={userHeadingLinks} />
+                <Heading title={username!} links={userHeadingLinks} />
                 <Switch>
                     <Route path={`${match.path}/labels/:labelName`}>
                         <SavedImages />
