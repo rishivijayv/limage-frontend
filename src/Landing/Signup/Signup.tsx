@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, mapErrorToField, resetError } from '../../Utilities/HelperFunctions';
 import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes'; 
-import { useSignupMutation } from "../../generated/graphql";
+import { useSignupMutation, MeQuery, MeDocument } from "../../generated/graphql";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -63,6 +63,15 @@ function Signup(){
                 variables: {
                     username: username.text,
                     password: password.text
+                },
+                update: (cache, { data }) => {
+                    cache.writeQuery<MeQuery>({
+                        query: MeDocument,
+                        data: {
+                            __typename: "Query",
+                            me: data?.signup.user
+                        }
+                    })
                 }
             });
 

@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { isFieldEmpty, resetError, mapErrorToField } from '../../Utilities/HelperFunctions';
 import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes';
-import { useLoginMutation } from '../../generated/graphql';
+import { useLoginMutation, MeDocument, MeQuery } from '../../generated/graphql';
 
 
 
@@ -55,6 +55,15 @@ function Login(){
                 variables: {
                     username: username.text,
                     password: password.text
+                },
+                update: (cache, { data }) => {
+                    cache.writeQuery<MeQuery>({
+                        query: MeDocument,
+                        data: {
+                            __typename: "Query",
+                            me: data?.login.user
+                        }
+                    })
                 }
             });
             
