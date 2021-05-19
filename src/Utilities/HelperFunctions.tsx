@@ -1,6 +1,8 @@
 import { StateSetter, InputField, PasswordInputField, StateObject } from '../GlobalTypes';
 import { InputError } from '../generated/graphql';
-
+import { useEffect, useState } from 'react';
+import { useMeQuery, User } from '../generated/graphql';
+import { useHistory } from 'react-router-dom';
 
 /**
  * Checks if the state variable used to represent a text/password field is empty. If the field is empty, and if it is mandatory, sets the error 
@@ -37,4 +39,26 @@ export function mapErrorToField(errors: InputError[], fieldMap: Record<string, S
         const { state, setState } = fieldMap[error.fieldName];
         setState({ ...state, ['helperText']: error.description, ['error']: true });
     });
+}
+
+/**
+ * Checks if the user is logged in and authorized to view the page. Returns the user if they are logged in and null otherwise
+ * @returns The current user logged in
+ */
+export function useAuthorizationCheck(): Pick<User, "username" | "id"> | null{
+    const { loading, data } = useMeQuery();
+    const [user, setUser] = useState<Pick<User, 'username' | 'id'> | null>(null);
+    const history = useHistory();
+
+    useEffect(() => {
+        if(!loading && !data?.me){
+            history.push(`/?next=${history.location.pathname}`);
+        }else if(!loading && data?.me){
+            // Means we are not loading and there is a user logged in
+            setUser(data?.me);
+        }
+    }, [loading, data]);
+
+    return user;
+    
 }
