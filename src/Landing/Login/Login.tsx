@@ -1,10 +1,10 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import PasswordField, { initPassword } from '../../Utilities/PasswordField';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { isFieldEmpty, resetError, mapErrorToField } from '../../Utilities/HelperFunctions';
+import { isFieldEmpty, resetError, mapErrorToField, parseQueryString } from '../../Utilities/HelperFunctions';
 import { PasswordInputField, InputField, StateObject } from '../../GlobalTypes';
 import { useLoginMutation, MeDocument, MeQuery } from '../../generated/graphql';
 
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function Login(){
     const history = useHistory();
+    const location = useLocation();
     const classes = useStyles();
     const [login, { loading }] = useLoginMutation();
     const [username, setUsername] = useState<InputField>({
@@ -37,6 +38,14 @@ function Login(){
         "username": { state: username, setState: setUsername },
         "password": { state: password, setState: setPassword }
     };
+
+    
+    const parsedParams = parseQueryString(location.search);
+    let nextPrompt = null;
+
+    if("next" in parsedParams){
+        nextPrompt = <h3>Please login to continue.</h3>
+    }   
 
 
     const handleSubmit = async () => {
@@ -72,7 +81,12 @@ function Login(){
                 return;
             }
 
-            history.push("/profile");
+            if("next" in parsedParams){
+                history.push(parsedParams["next"]);
+            }else{
+                history.push("/profile");    
+            }
+            
 
         }catch(e) {
             setLoginServerError(true);
@@ -89,6 +103,7 @@ function Login(){
             <Button disabled={loading} className={classes.button} onClick={() => handleSubmit()} variant="contained" component="label">
                 { loading ? "Logging in..." : "Login" }
             </Button>
+            {nextPrompt}
        </div>
    );
 }

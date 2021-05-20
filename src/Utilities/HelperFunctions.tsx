@@ -61,3 +61,26 @@ export function useAuthorizationCheck(): Pick<User, "username" | "id"> | null{
     return user;
     
 }
+
+/**
+ * Takes a query string from react-router-dom's location.search and returns an object representing the 
+ * key and the value.
+ * 
+ * Prerequisite: The input is a simple, well formed query string, such as: ?varOne=valueOne&varTwo=valTwo
+ * @param queryString A string representing the query string
+ */
+export function parseQueryString(queryString: string): Record<string, string> {
+    if(queryString.length === 0){
+        return {};
+    }
+    const queryObject = {};
+    const cleanQueryArray = queryString.substring(1).split('&');
+
+    cleanQueryArray.forEach(keyValueString => {
+        const [key, value] = keyValueString.split('=');
+        queryObject[key] = value;
+
+    });
+
+    return queryObject;
+}
