@@ -2,6 +2,7 @@
 
 import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import { SvgIconTypeMap } from "@material-ui/core/SvgIcon/SvgIcon";
+import { User } from './generated/graphql';
 
 export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
@@ -41,3 +42,7 @@ export type StateObject<T> = {
     state: T,
     setState: StateSetter<T>
 };
+
+export type ProtectedComponentProps = {
+    user: Pick<User, "username" | "id"> | null
+}

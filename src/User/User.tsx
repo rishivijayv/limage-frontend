@@ -10,8 +10,8 @@ import Upload from './Upload/Upload';
 import UploadedImages from './UploadedImages/UploadedImages';
 import Heading from '../Utilities/Heading';
 import Navigation from '../Navigation/Navigation';
-import { useAuthorizationCheck } from '../Utilities/HelperFunctions';
 import { makeStyles } from '@material-ui/core/styles';
+import { ProtectedComponentProps } from '../GlobalTypes';
 
 const useStyles = makeStyles({
     userContainer: {
@@ -19,15 +19,9 @@ const useStyles = makeStyles({
     },
 });
 
-function User(){
+function User({ user }: ProtectedComponentProps){
     const classes = useStyles();
     const match = useRouteMatch();
-    const user = useAuthorizationCheck();
-    
-    if(user === null){
-        // We are in the process of checking if user is authorized
-        return <h2>Loading...</h2>
-    }
 
     const userHeadingLinks= [
         {
@@ -48,7 +42,7 @@ function User(){
         <div>
             <Navigation />
             <div className={classes.userContainer}>
-                <Heading title={user.username} links={userHeadingLinks} />
+                <Heading title={user!.username} links={userHeadingLinks} />
                 <Switch>
                     <Route path={`${match.path}/labels/:labelName`}>
                         <SavedImages />

@@ -7,6 +7,7 @@ import Landing from './Landing/Landing';
 import User from './User/User';
 import Discover from './Discover/Discover';
 import Settings from './Settings/Settings';
+import Protected from './Utilities/Protected';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,10 +29,10 @@ function App() {
               <Discover />
           </Route>
           <Route path="/settings">
-              <Settings />
+              <Protected Component={Settings} />
           </Route>
           <Route path="/profile">
-            <User />
+            <Protected Component={User} />
           </Route>
           <Route path="/">
             <Landing />
