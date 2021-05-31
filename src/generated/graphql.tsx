@@ -21,6 +21,11 @@ export type CredentialsInput = {
   password: Scalars['String'];
 };
 
+export type ImageInput = {
+  file: Scalars['Upload'];
+  label: Scalars['String'];
+};
+
 export type InputError = {
   __typename?: 'InputError';
   fieldName: Scalars['String'];
@@ -47,7 +52,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationUploadArgs = {
-  picture: Scalars['Upload'];
+  image: ImageInput;
 };
 
 export type Query = {
@@ -119,7 +124,7 @@ export type SignupMutation = (
 );
 
 export type UploadImageMutationVariables = Exact<{
-  picture: Scalars['Upload'];
+  image: ImageInput;
 }>;
 
 
@@ -255,8 +260,8 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const UploadImageDocument = gql`
-    mutation UploadImage($picture: Upload!) {
-  upload(picture: $picture)
+    mutation UploadImage($image: ImageInput!) {
+  upload(image: $image)
 }
     `;
 export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
@@ -274,7 +279,7 @@ export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation,
  * @example
  * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
  *   variables: {
- *      picture: // value for 'picture'
+ *      image: // value for 'image'
  *   },
  * });
  */

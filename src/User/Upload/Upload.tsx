@@ -60,15 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-// type Response = {
-//     data: UndefinedabUploadImageMutation | | undefined,
-//     error: ApolloError | undefined
-// }
-// <Undefineable></Undefineable>
-// const initResponse: Response = {
-//     data: null,
-//     error: null
-// };
 
 function Upload(){
     const classes = useStyles();
@@ -76,9 +67,6 @@ function Upload(){
     const [imagePreview, setImagePreview] = useState<Nullable<string>>(null);
     const [imageLabel, setImageLabel] = useState("");
     const [labelInvalid, setLabelInvalid] = useState(false);
-    // const [imageSubmitted, setImageSubmitted] = useState(false);
-    
-    // const [response, setResponse] = useState(initResponse);
     const [upload, { data, loading, error }] = useUploadImageMutation();
 
 
@@ -113,19 +101,14 @@ function Upload(){
             setLabelInvalid(false);
         }
 
-        // setImageSubmitted(true);
-
         await upload({
             variables: {
-                picture: imageFile
+                image: {
+                    file: imageFile,
+                    label: imageLabel
+                }
             }
         });
-
-        // const uploadResponse = await uploadUserImage();
-        // setResponse({
-        //     data: uploadResponse.data,
-        //     error: uploadResponse.error
-        // });
 
     }
 
@@ -134,18 +117,9 @@ function Upload(){
         setImagePreview(null);
         setImageLabel("");
         setLabelInvalid(false);
-        // setImageSubmitted(false);
-        // setUploadResponse(null);
-        // setResponse(initResponse);
     }
 
 
-
-    // const waitingResponse = imageSubmitted && uploadResponse == null;
-    // const waitingResponse = imageSubmitted && (response.data == null) && (response.error == null);
-    // const successResponse = response.data != null && response.error == null;
-    // const errorResponse = response.data == null && response.error != null;
-    // const responseNotRecieved = !successResponse && !errorResponse;
     const responseNotRecieved = !data && !error;
 
     return (
