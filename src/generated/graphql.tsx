@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type CredentialsInput = {
@@ -30,6 +32,7 @@ export type Mutation = {
   signup: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  upload: Scalars['Boolean'];
 };
 
 
@@ -42,10 +45,16 @@ export type MutationLoginArgs = {
   credentials: CredentialsInput;
 };
 
+
+export type MutationUploadArgs = {
+  picture: Scalars['Upload'];
+};
+
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
 };
+
 
 export type User = {
   __typename?: 'User';
@@ -107,6 +116,16 @@ export type SignupMutation = (
       & Pick<InputError, 'fieldName' | 'description'>
     )>> }
   ) }
+);
+
+export type UploadImageMutationVariables = Exact<{
+  picture: Scalars['Upload'];
+}>;
+
+
+export type UploadImageMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'upload'>
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -235,6 +254,37 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const UploadImageDocument = gql`
+    mutation UploadImage($picture: Upload!) {
+  upload(picture: $picture)
+}
+    `;
+export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
+
+/**
+ * __useUploadImageMutation__
+ *
+ * To run a mutation, you first call `useUploadImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
+ *   variables: {
+ *      picture: // value for 'picture'
+ *   },
+ * });
+ */
+export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<UploadImageMutation, UploadImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadImageMutation, UploadImageMutationVariables>(UploadImageDocument, options);
+      }
+export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
+export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
+export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-
 import Button from '@material-ui/core/Button';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import RestoreIcon from '@material-ui/icons/Restore';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Nullable } from '../../GlobalTypes';
+import { useUploadImageMutation } from '../../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) => ({
     uploadForm: {
@@ -60,15 +60,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-type Response = {
-    data: Nullable<string>,
-    error: Nullable<string>
-}
-
-const initResponse: Response = {
-    data: null,
-    error: null
-};
+// type Response = {
+//     data: UndefinedabUploadImageMutation | | undefined,
+//     error: ApolloError | undefined
+// }
+// <Undefineable></Undefineable>
+// const initResponse: Response = {
+//     data: null,
+//     error: null
+// };
 
 function Upload(){
     const classes = useStyles();
@@ -76,8 +76,10 @@ function Upload(){
     const [imagePreview, setImagePreview] = useState<Nullable<string>>(null);
     const [imageLabel, setImageLabel] = useState("");
     const [labelInvalid, setLabelInvalid] = useState(false);
-    const [imageSubmitted, setImageSubmitted] = useState(false);
-    const [response, setResponse] = useState(initResponse);
+    // const [imageSubmitted, setImageSubmitted] = useState(false);
+    
+    // const [response, setResponse] = useState(initResponse);
+    const [upload, { data, loading, error }] = useUploadImageMutation();
 
 
     // Using effect to revoke object URL after component unmounts, as per https://stackoverflow.com/a/57781164
@@ -102,17 +104,6 @@ function Upload(){
         setImageFile(image);
     };
 
-    // TODO: Remove when API implemented
-    const timeout = (ms: number) => {
-        return new Promise(resolve => setTimeout(resolve, ms))
-    };
-    const uploadUserImage = async () => {
-        await timeout(2000);
-        return {
-            data: 'sample response',
-            error: null
-        };
-    };
 
     const submitImageOnCheck = async () => {
         if(imageLabel === ""){
@@ -122,13 +113,19 @@ function Upload(){
             setLabelInvalid(false);
         }
 
-        setImageSubmitted(true);
+        // setImageSubmitted(true);
 
-        const uploadResponse = await uploadUserImage();
-        setResponse({
-            data: uploadResponse.data,
-            error: uploadResponse.error
+        await upload({
+            variables: {
+                picture: imageFile
+            }
         });
+
+        // const uploadResponse = await uploadUserImage();
+        // setResponse({
+        //     data: uploadResponse.data,
+        //     error: uploadResponse.error
+        // });
 
     }
 
@@ -137,15 +134,19 @@ function Upload(){
         setImagePreview(null);
         setImageLabel("");
         setLabelInvalid(false);
-        setImageSubmitted(false);
-        setResponse(initResponse);
+        // setImageSubmitted(false);
+        // setUploadResponse(null);
+        // setResponse(initResponse);
     }
 
 
-    const waitingResponse = imageSubmitted && (response.data == null) && (response.error == null);
-    const successResponse = response.data != null && response.error == null;
-    const errorResponse = response.data == null && response.error != null;
-    const responseNotRecieved = !successResponse && !errorResponse;
+
+    // const waitingResponse = imageSubmitted && uploadResponse == null;
+    // const waitingResponse = imageSubmitted && (response.data == null) && (response.error == null);
+    // const successResponse = response.data != null && response.error == null;
+    // const errorResponse = response.data == null && response.error != null;
+    // const responseNotRecieved = !successResponse && !errorResponse;
+    const responseNotRecieved = !data && !error;
 
     return (
         <form className={classes.uploadForm}>
@@ -157,9 +158,9 @@ function Upload(){
                     helperText={labelInvalid ? "A label is mandatory for an image" : ""}
                     onChange={(e) => setImageLabel(e.target.value)}/>
             <br />
-            {waitingResponse ? <CircularProgress className={classes.progress}/> : null}
-            {successResponse ? <div className={classes.successfulSubmit}>Image Submitted</div> : null}
-            {errorResponse ? <div className={classes.errorSubmit}>Something went wrong, please try again.</div> : null}
+            {loading ? <CircularProgress className={classes.progress}/> : null}
+            {data?.upload ? <div className={classes.successfulSubmit}>Image Submitted</div> : null}
+            {error || (data && !data.upload) ? <div className={classes.errorSubmit}>Something went wrong, please try again.</div> : null}
             {imagePreview != null ? 
             <div className={classes.previewContainer}>
                 <img src={imagePreview} className={classes.previewImage}/> 

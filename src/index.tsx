@@ -2,9 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
 import { createMuiTheme, ThemeProvider, ThemeOptions } from '@material-ui/core/styles';
-import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
+import { ApolloClient, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { ApolloProvider } from "@apollo/client/react";
+import { createUploadLink } from "apollo-upload-client";
 import './index.css'
 
 const defaultTheme = createMuiTheme();
@@ -73,11 +74,6 @@ const theme = createCustomTheme({
   }
 });
 
-const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_SERVER_URL,
-  credentials: "include"
-});
-
 // TODO: For development only. Remove when app is complete
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -90,9 +86,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
+const uploadLinkWithHttp = createUploadLink({
+  uri: process.env.REACT_APP_SERVER_URL,
+  credentials: "include"
+});
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: from([errorLink, httpLink])
+  link: from([errorLink, uploadLinkWithHttp])
 });
 
 ReactDOM.render(
