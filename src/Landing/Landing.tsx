@@ -1,12 +1,14 @@
 import {
     Route,
     Link,
-    Switch
+    Switch,
+    useHistory
 } from 'react-router-dom';
 import Heading from '../Utilities/Heading';
 import Login from './Login/Login'
 import Signup from './Signup/Signup';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useMeQuery } from '../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: theme.custom.centerContainer,
@@ -25,6 +27,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 function Landing(){
     const classes = useStyles();
     const title = "~Limage~";
+    const { loading, data } = useMeQuery();
+    const history = useHistory();
+
+    if(loading){
+        return <></>
+    }
+
+    if(data?.me){
+        history.replace("/profile");
+    }
 
     const landingLinks = [
         {
