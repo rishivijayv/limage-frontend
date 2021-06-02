@@ -7,8 +7,9 @@ import PublishIcon from '@material-ui/icons/Publish';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import RestoreIcon from '@material-ui/icons/Restore';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Nullable } from '../../GlobalTypes';
-import { useUploadImageMutation } from '../../generated/graphql';
+import { Nullable, Undefineable } from '../../GlobalTypes';
+import { useUploadImageMutation, UploadImageMutation } from '../../generated/graphql';
+import { ApolloError } from '@apollo/client';
 
 const useStyles = makeStyles((theme: Theme) => ({
     uploadForm: {
@@ -67,7 +68,12 @@ function Upload(){
     const [imagePreview, setImagePreview] = useState<Nullable<string>>(null);
     const [imageLabel, setImageLabel] = useState("");
     const [labelInvalid, setLabelInvalid] = useState(false);
-    const [upload, { data, loading, error }] = useUploadImageMutation();
+    const [data, setData] = useState<UploadImageMutation | null | undefined>(undefined);
+    const [error, setError] = useState<Undefineable<ApolloError>>(undefined);
+    const [upload, { loading }] = useUploadImageMutation({
+        onError: setError,
+        onCompleted: setData
+    });
 
 
     // Using effect to revoke object URL after component unmounts, as per https://stackoverflow.com/a/57781164
@@ -117,6 +123,8 @@ function Upload(){
         setImagePreview(null);
         setImageLabel("");
         setLabelInvalid(false);
+        setData(undefined);
+        setError(undefined);
     }
 
 
