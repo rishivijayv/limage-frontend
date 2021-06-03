@@ -21,6 +21,14 @@ export type CredentialsInput = {
   password: Scalars['String'];
 };
 
+export type Image = {
+  __typename?: 'Image';
+  id: Scalars['Float'];
+  location: Scalars['String'];
+  label: Scalars['String'];
+  createdAt: Scalars['String'];
+};
+
 export type ImageInput = {
   file: Scalars['Upload'];
   label: Scalars['String'];
@@ -58,8 +66,21 @@ export type MutationUploadArgs = {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
+  uploadedImages: UploadedImageResponse;
 };
 
+
+export type QueryUploadedImagesArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
+export type UploadedImageResponse = {
+  __typename?: 'UploadedImageResponse';
+  images: Array<Image>;
+  hasMore: Scalars['Boolean'];
+};
 
 export type User = {
   __typename?: 'User';
@@ -142,6 +163,24 @@ export type MeQuery = (
     { __typename?: 'User' }
     & Pick<User, 'username' | 'id'>
   )> }
+);
+
+export type UserUploadedImagesQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UserUploadedImagesQuery = (
+  { __typename?: 'Query' }
+  & { uploadedImages: (
+    { __typename?: 'UploadedImageResponse' }
+    & Pick<UploadedImageResponse, 'hasMore'>
+    & { images: Array<(
+      { __typename?: 'Image' }
+      & Pick<Image, 'id' | 'location' | 'label' | 'createdAt'>
+    )> }
+  ) }
 );
 
 
@@ -325,3 +364,45 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const UserUploadedImagesDocument = gql`
+    query UserUploadedImages($limit: Int!, $cursor: String) {
+  uploadedImages(limit: $limit, cursor: $cursor) {
+    hasMore
+    images {
+      id
+      location
+      label
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserUploadedImagesQuery__
+ *
+ * To run a query within a React component, call `useUserUploadedImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserUploadedImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserUploadedImagesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useUserUploadedImagesQuery(baseOptions: Apollo.QueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>(UserUploadedImagesDocument, options);
+      }
+export function useUserUploadedImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>(UserUploadedImagesDocument, options);
+        }
+export type UserUploadedImagesQueryHookResult = ReturnType<typeof useUserUploadedImagesQuery>;
+export type UserUploadedImagesLazyQueryHookResult = ReturnType<typeof useUserUploadedImagesLazyQuery>;
+export type UserUploadedImagesQueryResult = Apollo.QueryResult<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>;

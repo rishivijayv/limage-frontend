@@ -1,0 +1,12 @@
+query UserUploadedImages($limit: Int!, $cursor: String){
+  uploadedImages(limit:$limit, cursor:$cursor)
+  {
+    hasMore
+    images {
+      id
+      location
+      label
+      createdAt
+    }
+  }
+}
