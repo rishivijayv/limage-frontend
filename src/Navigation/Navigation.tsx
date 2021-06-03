@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             display: ExitToAppIcon,
             onClick: async () => {
                 await logout();
-                await client.resetStore();
+                await client.clearStore();
             },
             disable: logoutLoading
         });
