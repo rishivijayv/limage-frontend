@@ -1,4 +1,4 @@
-query UserUploadedImages($limit: Int!, $cursor: String){
+query UserUploadedImages($limit: Int, $cursor: String){
   uploadedImages(limit:$limit, cursor:$cursor)
   {
     hasMore

@@ -46,6 +46,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   upload: Scalars['Boolean'];
+  deleteUploadedImage: Scalars['Boolean'];
 };
 
 
@@ -63,6 +64,11 @@ export type MutationUploadArgs = {
   image: ImageInput;
 };
 
+
+export type MutationDeleteUploadedImageArgs = {
+  imageId: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
@@ -72,7 +78,7 @@ export type Query = {
 
 export type QueryUploadedImagesArgs = {
   cursor?: Maybe<Scalars['String']>;
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
@@ -95,6 +101,16 @@ export type UserResponse = {
   errors?: Maybe<Array<InputError>>;
   user?: Maybe<User>;
 };
+
+export type DeleteUploadedImageMutationVariables = Exact<{
+  imageId: Scalars['Int'];
+}>;
+
+
+export type DeleteUploadedImageMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteUploadedImage'>
+);
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -166,7 +182,7 @@ export type MeQuery = (
 );
 
 export type UserUploadedImagesQueryVariables = Exact<{
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   cursor?: Maybe<Scalars['String']>;
 }>;
 
@@ -184,6 +200,37 @@ export type UserUploadedImagesQuery = (
 );
 
 
+export const DeleteUploadedImageDocument = gql`
+    mutation DeleteUploadedImage($imageId: Int!) {
+  deleteUploadedImage(imageId: $imageId)
+}
+    `;
+export type DeleteUploadedImageMutationFn = Apollo.MutationFunction<DeleteUploadedImageMutation, DeleteUploadedImageMutationVariables>;
+
+/**
+ * __useDeleteUploadedImageMutation__
+ *
+ * To run a mutation, you first call `useDeleteUploadedImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUploadedImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUploadedImageMutation, { data, loading, error }] = useDeleteUploadedImageMutation({
+ *   variables: {
+ *      imageId: // value for 'imageId'
+ *   },
+ * });
+ */
+export function useDeleteUploadedImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUploadedImageMutation, DeleteUploadedImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUploadedImageMutation, DeleteUploadedImageMutationVariables>(DeleteUploadedImageDocument, options);
+      }
+export type DeleteUploadedImageMutationHookResult = ReturnType<typeof useDeleteUploadedImageMutation>;
+export type DeleteUploadedImageMutationResult = Apollo.MutationResult<DeleteUploadedImageMutation>;
+export type DeleteUploadedImageMutationOptions = Apollo.BaseMutationOptions<DeleteUploadedImageMutation, DeleteUploadedImageMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(credentials: {username: $username, password: $password}) {
@@ -365,7 +412,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserUploadedImagesDocument = gql`
-    query UserUploadedImages($limit: Int!, $cursor: String) {
+    query UserUploadedImages($limit: Int, $cursor: String) {
   uploadedImages(limit: $limit, cursor: $cursor) {
     hasMore
     images {
@@ -395,7 +442,7 @@ export const UserUploadedImagesDocument = gql`
  *   },
  * });
  */
-export function useUserUploadedImagesQuery(baseOptions: Apollo.QueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
+export function useUserUploadedImagesQuery(baseOptions?: Apollo.QueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>(UserUploadedImagesDocument, options);
       }

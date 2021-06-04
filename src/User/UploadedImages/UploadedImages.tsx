@@ -3,10 +3,15 @@ import { useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Backdrop from '@material-ui/core/Backdrop';
-import { useUserUploadedImagesQuery } from '../../generated/graphql';
+import { 
+    useUserUploadedImagesQuery, 
+    useDeleteUploadedImageMutation, 
+    DeleteUploadedImageMutation } from '../../generated/graphql';
 import SearchField from '../../Utilities/SearchField';
 import Images from '../../Utilities/Images';
 import Button from '@material-ui/core/Button';
+import { ApolloError } from '@apollo/client';
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     gridList: {
@@ -21,20 +26,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-type Response = {
-    data: string | null,
-    error: string | null
+type ImageDeleteResponse = {
+    data: DeleteUploadedImageMutation | null | undefined,
+    error: ApolloError | undefined
 }
 
-const initResponse: Response = {
-    data: null,
-    error: null
+const initImageDeleteResponse: ImageDeleteResponse = {
+    data: undefined,
+    error: undefined
 }
 
 
 function UploadedImages(){
-    const [imageDeleteRequested, setImageDeleteRequested] = useState(false);
-    const [imageDeleteResponse, setImageDeleteResponse] = useState(initResponse);
     const [labelFilter, setLabelFilter] = useState("");
     const { data, error, loading, fetchMore } = useUserUploadedImagesQuery({
         variables: {
@@ -43,6 +46,16 @@ function UploadedImages(){
         },
         notifyOnNetworkStatusChange: true,
     });
+    const [imageDeleteResponse, setImageDeleteResponse] = useState<ImageDeleteResponse>(initImageDeleteResponse)
+    const [deleteImage, { loading: imageDeleteLoading }] = useDeleteUploadedImageMutation({
+        onError: (error) => {
+            setImageDeleteResponse({ ...imageDeleteResponse, ['error']: error });
+        },
+        onCompleted: (data) => {
+            setImageDeleteResponse({ ...imageDeleteResponse, ['data']: data })
+        }
+    });
+    const [backdrop, setBackdrop] = useState(false);
     const classes = useStyles();
 
     if(error){
@@ -55,12 +68,22 @@ function UploadedImages(){
 
     const requestImageDeletion = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number): Promise<void> => {
         e.preventDefault();
-        
+        setBackdrop(true);
+
+        await deleteImage({
+            variables: {
+                imageId
+            },
+            update: (cache) => {
+                cache.evict({ id: "Image:" + imageId });
+            }
+        });
+        console.log("IMage deleted");
     };
 
     const resetDeletion = () => {
-        setImageDeleteRequested(false);
-        setImageDeleteResponse(initResponse);
+        setBackdrop(false);
+        setImageDeleteResponse(initImageDeleteResponse);
     };
 
 
@@ -105,10 +128,10 @@ function UploadedImages(){
 
             :
             null}
-            <Backdrop open={imageDeleteRequested} onClick={() => resetDeletion()} className={classes.backdrop}>
-                {imageDeleteResponse.data == null && imageDeleteResponse.error == null ? <CircularProgress color="inherit"/> : null} 
-                {imageDeleteResponse.data != null ? <h1>Image Successfully Deleted.</h1> : null}
-                {imageDeleteResponse.error != null ? <h1>There was an error in deleting the image. Please try again</h1> : null}
+            <Backdrop open={backdrop} onClick={() => resetDeletion()} className={classes.backdrop}>
+                {imageDeleteLoading ? <CircularProgress color="inherit"/> : null}
+                {imageDeleteResponse.error || (imageDeleteResponse.data && !imageDeleteResponse.data.deleteUploadedImage) ? <h1>There was an error in deleting the image. Please try again</h1> : null}
+                {imageDeleteResponse.data?.deleteUploadedImage ? <h1>Image Successfully Deleted.</h1> : null}
             </Backdrop>
         </div>
     );
