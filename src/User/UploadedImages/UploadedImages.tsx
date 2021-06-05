@@ -6,7 +6,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { 
     useUserUploadedImagesQuery, 
     useDeleteUploadedImageMutation, 
-    DeleteUploadedImageMutation } from '../../generated/graphql';
+    DeleteUploadedImageMutation,
+    UserUploadedImagesDocument,
+    UserUploadedImagesQuery } from '../../generated/graphql';
 import SearchField from '../../Utilities/SearchField';
 import Images from '../../Utilities/Images';
 import Button from '@material-ui/core/Button';
@@ -76,6 +78,22 @@ function UploadedImages(){
             },
             update: (cache) => {
                 cache.evict({ id: "Image:" + imageId });
+
+                // Fetch the next image. Same cache key used for fetchMore as well
+                const lastResults = cache.readQuery<UserUploadedImagesQuery>({
+                    query: UserUploadedImagesDocument,
+                    variables: {
+                        limit: 3,
+                        cursor: null
+                    }
+                });
+                if(!lastResults || !lastResults.uploadedImages.hasMore || lastResults.uploadedImages.images.length === 0) return;
+
+                const lastCursor = lastResults.uploadedImages.images[lastResults.uploadedImages.images.length - 1].createdAt;
+
+                // Fetch the next image
+                fetchMoreImages(1, lastCursor);
+                console.log(lastResults);
             }
         });
         console.log("IMage deleted");
@@ -93,12 +111,17 @@ function UploadedImages(){
         displayLabel: `~${filteredImage.label}~`, 
     }));
 
-    const fetchMoreImages = async () => {
+    const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
 
+        let nextCursor = cursor;
+
+        if(!nextCursor){
+            nextCursor = data?.uploadedImages.images[data.uploadedImages.images.length - 1].createdAt;
+        }
         fetchMore({
             variables: {
-                limit: 3,
-                cursor: data?.uploadedImages.images[data.uploadedImages.images.length - 1].createdAt
+                limit,
+                cursor: nextCursor
             },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if(!fetchMoreResult) return prev;
@@ -109,9 +132,8 @@ function UploadedImages(){
                 ];
 
                 return fetchMoreResult
-            }
-        })
-        
+            },
+        });
     };
 
     return (
@@ -121,7 +143,7 @@ function UploadedImages(){
             <Images imageList={imageList!} onImageButtonClick={requestImageDeletion} actionIcon={DeleteIcon}/>
             {data && data.uploadedImages.hasMore ? 
             <div className={classes.loadMoreContainer}>
-                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={fetchMoreImages}>
+                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreImages(3, null)}>
                     { loading ? "Loading..." : "Load More" }
                 </Button>
             </div>
