@@ -3,6 +3,8 @@ query DiscoverImages($search: String!, $paginatedInput: PaginatedInput!){
         entities {
             id
             location
+            label
+            createdAt
         }
         hasMore
     }

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type ImagesProps = {
     imageList: Image[],
-    onImageButtonClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number) => Promise<void>,
+    onImageButtonClick: ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number) => Promise<void>) | ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void),
     actionIcon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
 };
 

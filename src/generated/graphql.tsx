@@ -280,7 +280,7 @@ export type DiscoverImagesQuery = (
     & Pick<PaginatedImageResponse, 'hasMore'>
     & { entities: Array<(
       { __typename?: 'Image' }
-      & Pick<Image, 'id' | 'location'>
+      & Pick<Image, 'id' | 'location' | 'label' | 'createdAt'>
     )> }
   ) }
 );
@@ -599,6 +599,8 @@ export const DiscoverImagesDocument = gql`
     entities {
       id
       location
+      label
+      createdAt
     }
     hasMore
   }
