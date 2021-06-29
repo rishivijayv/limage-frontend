@@ -297,7 +297,7 @@ export type LabelsForUserQuery = (
     & Pick<PaginatedUserLabelResponse, 'hasMore'>
     & { entities: Array<(
       { __typename?: 'UserLabel' }
-      & Pick<UserLabel, 'id' | 'labelName'>
+      & Pick<UserLabel, 'id' | 'labelName' | 'createdAt'>
     )> }
   ) }
 );
@@ -641,6 +641,7 @@ export const LabelsForUserDocument = gql`
     entities {
       id
       labelName
+      createdAt
     }
     hasMore
   }

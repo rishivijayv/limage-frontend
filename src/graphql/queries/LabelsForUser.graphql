@@ -3,6 +3,7 @@ query LabelsForUser($paginatedInput: PaginatedInput!) {
         entities {
             id
             labelName
+            createdAt
         }
         hasMore
     }

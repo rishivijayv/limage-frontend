@@ -3,15 +3,16 @@ import {
     useHistory 
 } from 'react-router-dom';
 import { useState } from 'react';
-import { labels } from '../../TempData/TempData';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import SearchField from '../../Utilities/SearchField';
+import { useLabelsForUserQuery, UserLabel } from "../../generated/graphql";
 
 const useStyles = makeStyles((theme: Theme) => ({
     labelCard: {
@@ -28,7 +29,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     breadcrumb: {
         marginBottom: '5px',
         '& a': theme.custom.basicLink
-    }
+    },
+    loadMoreContainer: {
+        textAlign: 'center',
+        marginTop: '20px'
+    },
+    button: theme.custom.button,
 }));
 
 
@@ -37,6 +43,25 @@ function Labels(){
     const history = useHistory();
     const classes = useStyles();
     const [toSearch, setToSearch] = useState("");
+    const { loading, data, error, fetchMore } = useLabelsForUserQuery({
+        variables: {
+            paginatedInput: {
+                limit: 3,
+                cursor: null
+            }
+        }
+    });
+
+    let labels: UserLabel[] = [];
+
+    if(loading && !data){
+        return <></>
+    }else if(error) {
+        return <h3>Something went wrong. Please try again later</h3>
+    }else if(data) {
+        labels = data.labelsForUser.entities.filter(label => label.labelName.startsWith(toSearch))
+        console.log(labels);
+    }
 
     const navigateToLabel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const element = event.target as HTMLElement;
@@ -45,20 +70,46 @@ function Labels(){
         history.push(`${match.url}/${labelName}`);
     };
 
+    const fetchMoreLabels = async (limit: number, cursor: string | null | undefined) => {
+
+        let nextCursor = cursor;
+
+        if(!nextCursor){
+            nextCursor = data?.labelsForUser.entities[data.labelsForUser.entities.length - 1].createdAt;
+        }
+        fetchMore({
+            variables: {
+                paginatedInput: {
+                    limit,
+                    cursor: nextCursor
+                }
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if(!fetchMoreResult) return prev;
+
+                fetchMoreResult.labelsForUser.entities = [
+                    ...prev.labelsForUser.entities,
+                    ...fetchMoreResult.labelsForUser.entities
+                ];
+
+                return fetchMoreResult
+            },
+        });
+    };
+
     return (
         <div>
             <SearchField label="Search for Label" onChange={(e) => setToSearch(e.target.value)}/>
             <br />
             <GridList cellHeight={350} cols={3}>
                 {labels
-                .filter(label => label.startsWith(toSearch))
                 .map((label) => {
                     return <GridListTile>
                         <Card variant="outlined" className={classes.labelCard}>
                             <CardActionArea onClick={(e) => navigateToLabel(e)} className={classes.centerContent}>
                                 <CardContent className={classes.centerContent}>
                                     <Typography variant="h2">
-                                        ~{label}~
+                                        ~{label.labelName}~
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
@@ -67,6 +118,14 @@ function Labels(){
                     </GridListTile>
                 })}
             </GridList>
+            {data && data.labelsForUser.hasMore ? 
+            <div className={classes.loadMoreContainer}>
+                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreLabels(3, null)}>
+                    { loading ? "Loading..." : "Load More" }
+                </Button>
+            </div>
+            :
+            null}
         </div>
         
     );

@@ -102,7 +102,7 @@ function Discover(){
             variables: {
                 imageInfo: {
                     imageId,
-                    labelName: imageToSave!.displayLabel
+                    labelName: imageToSave!.displayLabel.substring(1, imageToSave!.displayLabel.length - 1)
                 }
             }
         });
