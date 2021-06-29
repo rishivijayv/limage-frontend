@@ -43,8 +43,10 @@ function UploadedImages(){
     const [labelFilter, setLabelFilter] = useState("");
     const { data, error, loading, fetchMore } = useUserUploadedImagesQuery({
         variables: {
-            limit: 3,
-            cursor: null
+            paginatedInput: {
+                limit: 3,
+                cursor: null
+            }
         },
         notifyOnNetworkStatusChange: true,
     });
@@ -83,13 +85,15 @@ function UploadedImages(){
                 const lastResults = cache.readQuery<UserUploadedImagesQuery>({
                     query: UserUploadedImagesDocument,
                     variables: {
-                        limit: 3,
-                        cursor: null
+                        paginatedInput: {
+                            limit: 3,
+                            cursor: null
+                        }
                     }
                 });
-                if(!lastResults || !lastResults.uploadedImages.hasMore || lastResults.uploadedImages.images.length === 0) return;
+                if(!lastResults || !lastResults.uploadedImages.hasMore || lastResults.uploadedImages.entities.length === 0) return;
 
-                const lastCursor = lastResults.uploadedImages.images[lastResults.uploadedImages.images.length - 1].createdAt;
+                const lastCursor = lastResults.uploadedImages.entities[lastResults.uploadedImages.entities.length - 1].createdAt;
 
                 // Fetch the next image
                 fetchMoreImages(1, lastCursor);
@@ -105,7 +109,7 @@ function UploadedImages(){
     };
 
 
-    const imageList = data?.uploadedImages.images.filter(image => image.label.startsWith(labelFilter)).map(filteredImage => ({ 
+    const imageList = data?.uploadedImages.entities.filter(entity => entity.label.startsWith(labelFilter)).map(filteredImage => ({ 
         id: filteredImage.id,
         img: filteredImage.location, 
         displayLabel: `~${filteredImage.label}~`, 
@@ -116,19 +120,21 @@ function UploadedImages(){
         let nextCursor = cursor;
 
         if(!nextCursor){
-            nextCursor = data?.uploadedImages.images[data.uploadedImages.images.length - 1].createdAt;
+            nextCursor = data?.uploadedImages.entities[data.uploadedImages.entities.length - 1].createdAt;
         }
         fetchMore({
             variables: {
-                limit,
-                cursor: nextCursor
+                paginatedInput: {
+                    limit,
+                    cursor: nextCursor
+                }
             },
             updateQuery: (prev, { fetchMoreResult }) => {
                 if(!fetchMoreResult) return prev;
 
-                fetchMoreResult.uploadedImages.images = [
-                    ...prev.uploadedImages.images,
-                    ...fetchMoreResult.uploadedImages.images
+                fetchMoreResult.uploadedImages.entities = [
+                    ...prev.uploadedImages.entities,
+                    ...fetchMoreResult.uploadedImages.entities
                 ];
 
                 return fetchMoreResult

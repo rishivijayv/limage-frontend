@@ -1,0 +1,9 @@
+query SavedImages($paginatedInput:PaginatedInput!, $labelId: Int!){
+    savedImages(paginatedInput:$paginatedInput, labelId:$labelId) {
+        entities {
+            id
+            location
+        },
+        hasMore
+    }
+}

@@ -1,0 +1,6 @@
+mutation DeleteSavedImage($imageInfo: DeleteLabelImageInput!) {
+    deleteSavedImage(imageInfo:$imageInfo){
+        deleteSuccessful
+        imagesLeftInLabel
+    }
+}

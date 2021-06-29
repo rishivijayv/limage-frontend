@@ -1,8 +1,8 @@
-query UserUploadedImages($limit: Int, $cursor: String){
-  uploadedImages(limit:$limit, cursor:$cursor)
+query UserUploadedImages($paginatedInput: PaginatedInput!){
+  uploadedImages(paginatedInput:$paginatedInput)
   {
     hasMore
-    images {
+    entities {
       id
       location
       label

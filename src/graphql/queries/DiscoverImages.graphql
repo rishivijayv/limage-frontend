@@ -1,0 +1,9 @@
+query DiscoverImages($search: String!, $paginatedInput: PaginatedInput!){
+    discoverImages(search: $search, paginatedInput:$paginatedInput){
+        entities {
+            id
+            location
+        }
+        hasMore
+    }
+}

@@ -1,0 +1,9 @@
+query LabelsForUser($paginatedInput: PaginatedInput!) {
+    labelsForUser(paginatedInput:$paginatedInput){
+        entities {
+            id
+            labelName
+        }
+        hasMore
+    }
+}

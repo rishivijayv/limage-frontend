@@ -1,0 +1,6 @@
+mutation SaveImage($imageInfo: ImageSaveInput!) {
+    saveImage(imageInfo:$imageInfo){
+        saveSuccessful
+        descrtiption
+    }
+}

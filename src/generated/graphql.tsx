@@ -21,6 +21,17 @@ export type CredentialsInput = {
   password: Scalars['String'];
 };
 
+export type DeleteLabelImageInput = {
+  imageId: Scalars['Int'];
+  labelId: Scalars['Int'];
+};
+
+export type DeleteLabelImageResponse = {
+  __typename?: 'DeleteLabelImageResponse';
+  deleteSuccessful: Scalars['Boolean'];
+  imagesLeftInLabel: Scalars['Int'];
+};
+
 export type Image = {
   __typename?: 'Image';
   id: Scalars['Float'];
@@ -32,6 +43,11 @@ export type Image = {
 export type ImageInput = {
   file: Scalars['Upload'];
   label: Scalars['String'];
+};
+
+export type ImageSaveInput = {
+  imageId: Scalars['Int'];
+  labelName: Scalars['String'];
 };
 
 export type InputError = {
@@ -46,6 +62,8 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   upload: Scalars['Boolean'];
+  deleteSavedImage: DeleteLabelImageResponse;
+  saveImage: SaveImageResponse;
   deleteUploadedImage: Scalars['Boolean'];
 };
 
@@ -65,28 +83,74 @@ export type MutationUploadArgs = {
 };
 
 
+export type MutationDeleteSavedImageArgs = {
+  imageInfo: DeleteLabelImageInput;
+};
+
+
+export type MutationSaveImageArgs = {
+  imageInfo: ImageSaveInput;
+};
+
+
 export type MutationDeleteUploadedImageArgs = {
   imageId: Scalars['Int'];
+};
+
+export type PaginatedImageResponse = {
+  __typename?: 'PaginatedImageResponse';
+  entities: Array<Image>;
+  hasMore: Scalars['Boolean'];
+};
+
+export type PaginatedInput = {
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+};
+
+export type PaginatedUserLabelResponse = {
+  __typename?: 'PaginatedUserLabelResponse';
+  entities: Array<UserLabel>;
+  hasMore: Scalars['Boolean'];
 };
 
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
-  uploadedImages: UploadedImageResponse;
+  uploadedImages: PaginatedImageResponse;
+  labelsForUser: PaginatedUserLabelResponse;
+  savedImages: PaginatedImageResponse;
+  discoverImages: PaginatedImageResponse;
 };
 
 
 export type QueryUploadedImagesArgs = {
-  cursor?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
+  paginatedInput: PaginatedInput;
 };
 
 
-export type UploadedImageResponse = {
-  __typename?: 'UploadedImageResponse';
-  images: Array<Image>;
-  hasMore: Scalars['Boolean'];
+export type QueryLabelsForUserArgs = {
+  paginatedInput: PaginatedInput;
 };
+
+
+export type QuerySavedImagesArgs = {
+  labelId: Scalars['Int'];
+  paginatedInput: PaginatedInput;
+};
+
+
+export type QueryDiscoverImagesArgs = {
+  search: Scalars['String'];
+  paginatedInput: PaginatedInput;
+};
+
+export type SaveImageResponse = {
+  __typename?: 'SaveImageResponse';
+  saveSuccessful: Scalars['Boolean'];
+  descrtiption: Scalars['String'];
+};
+
 
 export type User = {
   __typename?: 'User';
@@ -96,11 +160,31 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type UserLabel = {
+  __typename?: 'UserLabel';
+  id: Scalars['Float'];
+  labelName: Scalars['String'];
+  createdAt: Scalars['String'];
+};
+
 export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<InputError>>;
   user?: Maybe<User>;
 };
+
+export type DeleteSavedImageMutationVariables = Exact<{
+  imageInfo: DeleteLabelImageInput;
+}>;
+
+
+export type DeleteSavedImageMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteSavedImage: (
+    { __typename?: 'DeleteLabelImageResponse' }
+    & Pick<DeleteLabelImageResponse, 'deleteSuccessful' | 'imagesLeftInLabel'>
+  ) }
+);
 
 export type DeleteUploadedImageMutationVariables = Exact<{
   imageId: Scalars['Int'];
@@ -140,6 +224,19 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type SaveImageMutationVariables = Exact<{
+  imageInfo: ImageSaveInput;
+}>;
+
+
+export type SaveImageMutation = (
+  { __typename?: 'Mutation' }
+  & { saveImage: (
+    { __typename?: 'SaveImageResponse' }
+    & Pick<SaveImageResponse, 'saveSuccessful' | 'descrtiption'>
+  ) }
+);
+
 export type SignupMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -170,6 +267,41 @@ export type UploadImageMutation = (
   & Pick<Mutation, 'upload'>
 );
 
+export type DiscoverImagesQueryVariables = Exact<{
+  search: Scalars['String'];
+  paginatedInput: PaginatedInput;
+}>;
+
+
+export type DiscoverImagesQuery = (
+  { __typename?: 'Query' }
+  & { discoverImages: (
+    { __typename?: 'PaginatedImageResponse' }
+    & Pick<PaginatedImageResponse, 'hasMore'>
+    & { entities: Array<(
+      { __typename?: 'Image' }
+      & Pick<Image, 'id' | 'location'>
+    )> }
+  ) }
+);
+
+export type LabelsForUserQueryVariables = Exact<{
+  paginatedInput: PaginatedInput;
+}>;
+
+
+export type LabelsForUserQuery = (
+  { __typename?: 'Query' }
+  & { labelsForUser: (
+    { __typename?: 'PaginatedUserLabelResponse' }
+    & Pick<PaginatedUserLabelResponse, 'hasMore'>
+    & { entities: Array<(
+      { __typename?: 'UserLabel' }
+      & Pick<UserLabel, 'id' | 'labelName'>
+    )> }
+  ) }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -181,18 +313,35 @@ export type MeQuery = (
   )> }
 );
 
+export type SavedImagesQueryVariables = Exact<{
+  paginatedInput: PaginatedInput;
+  labelId: Scalars['Int'];
+}>;
+
+
+export type SavedImagesQuery = (
+  { __typename?: 'Query' }
+  & { savedImages: (
+    { __typename?: 'PaginatedImageResponse' }
+    & Pick<PaginatedImageResponse, 'hasMore'>
+    & { entities: Array<(
+      { __typename?: 'Image' }
+      & Pick<Image, 'id' | 'location'>
+    )> }
+  ) }
+);
+
 export type UserUploadedImagesQueryVariables = Exact<{
-  limit?: Maybe<Scalars['Int']>;
-  cursor?: Maybe<Scalars['String']>;
+  paginatedInput: PaginatedInput;
 }>;
 
 
 export type UserUploadedImagesQuery = (
   { __typename?: 'Query' }
   & { uploadedImages: (
-    { __typename?: 'UploadedImageResponse' }
-    & Pick<UploadedImageResponse, 'hasMore'>
-    & { images: Array<(
+    { __typename?: 'PaginatedImageResponse' }
+    & Pick<PaginatedImageResponse, 'hasMore'>
+    & { entities: Array<(
       { __typename?: 'Image' }
       & Pick<Image, 'id' | 'location' | 'label' | 'createdAt'>
     )> }
@@ -200,6 +349,40 @@ export type UserUploadedImagesQuery = (
 );
 
 
+export const DeleteSavedImageDocument = gql`
+    mutation DeleteSavedImage($imageInfo: DeleteLabelImageInput!) {
+  deleteSavedImage(imageInfo: $imageInfo) {
+    deleteSuccessful
+    imagesLeftInLabel
+  }
+}
+    `;
+export type DeleteSavedImageMutationFn = Apollo.MutationFunction<DeleteSavedImageMutation, DeleteSavedImageMutationVariables>;
+
+/**
+ * __useDeleteSavedImageMutation__
+ *
+ * To run a mutation, you first call `useDeleteSavedImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSavedImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSavedImageMutation, { data, loading, error }] = useDeleteSavedImageMutation({
+ *   variables: {
+ *      imageInfo: // value for 'imageInfo'
+ *   },
+ * });
+ */
+export function useDeleteSavedImageMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSavedImageMutation, DeleteSavedImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSavedImageMutation, DeleteSavedImageMutationVariables>(DeleteSavedImageDocument, options);
+      }
+export type DeleteSavedImageMutationHookResult = ReturnType<typeof useDeleteSavedImageMutation>;
+export type DeleteSavedImageMutationResult = Apollo.MutationResult<DeleteSavedImageMutation>;
+export type DeleteSavedImageMutationOptions = Apollo.BaseMutationOptions<DeleteSavedImageMutation, DeleteSavedImageMutationVariables>;
 export const DeleteUploadedImageDocument = gql`
     mutation DeleteUploadedImage($imageId: Int!) {
   deleteUploadedImage(imageId: $imageId)
@@ -303,6 +486,40 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const SaveImageDocument = gql`
+    mutation SaveImage($imageInfo: ImageSaveInput!) {
+  saveImage(imageInfo: $imageInfo) {
+    saveSuccessful
+    descrtiption
+  }
+}
+    `;
+export type SaveImageMutationFn = Apollo.MutationFunction<SaveImageMutation, SaveImageMutationVariables>;
+
+/**
+ * __useSaveImageMutation__
+ *
+ * To run a mutation, you first call `useSaveImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveImageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveImageMutation, { data, loading, error }] = useSaveImageMutation({
+ *   variables: {
+ *      imageInfo: // value for 'imageInfo'
+ *   },
+ * });
+ */
+export function useSaveImageMutation(baseOptions?: Apollo.MutationHookOptions<SaveImageMutation, SaveImageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveImageMutation, SaveImageMutationVariables>(SaveImageDocument, options);
+      }
+export type SaveImageMutationHookResult = ReturnType<typeof useSaveImageMutation>;
+export type SaveImageMutationResult = Apollo.MutationResult<SaveImageMutation>;
+export type SaveImageMutationOptions = Apollo.BaseMutationOptions<SaveImageMutation, SaveImageMutationVariables>;
 export const SignupDocument = gql`
     mutation Signup($username: String!, $password: String!) {
   signup(credentials: {username: $username, password: $password}) {
@@ -376,6 +593,85 @@ export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
 export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
 export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
+export const DiscoverImagesDocument = gql`
+    query DiscoverImages($search: String!, $paginatedInput: PaginatedInput!) {
+  discoverImages(search: $search, paginatedInput: $paginatedInput) {
+    entities {
+      id
+      location
+    }
+    hasMore
+  }
+}
+    `;
+
+/**
+ * __useDiscoverImagesQuery__
+ *
+ * To run a query within a React component, call `useDiscoverImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscoverImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscoverImagesQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *      paginatedInput: // value for 'paginatedInput'
+ *   },
+ * });
+ */
+export function useDiscoverImagesQuery(baseOptions: Apollo.QueryHookOptions<DiscoverImagesQuery, DiscoverImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DiscoverImagesQuery, DiscoverImagesQueryVariables>(DiscoverImagesDocument, options);
+      }
+export function useDiscoverImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscoverImagesQuery, DiscoverImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DiscoverImagesQuery, DiscoverImagesQueryVariables>(DiscoverImagesDocument, options);
+        }
+export type DiscoverImagesQueryHookResult = ReturnType<typeof useDiscoverImagesQuery>;
+export type DiscoverImagesLazyQueryHookResult = ReturnType<typeof useDiscoverImagesLazyQuery>;
+export type DiscoverImagesQueryResult = Apollo.QueryResult<DiscoverImagesQuery, DiscoverImagesQueryVariables>;
+export const LabelsForUserDocument = gql`
+    query LabelsForUser($paginatedInput: PaginatedInput!) {
+  labelsForUser(paginatedInput: $paginatedInput) {
+    entities {
+      id
+      labelName
+    }
+    hasMore
+  }
+}
+    `;
+
+/**
+ * __useLabelsForUserQuery__
+ *
+ * To run a query within a React component, call `useLabelsForUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLabelsForUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLabelsForUserQuery({
+ *   variables: {
+ *      paginatedInput: // value for 'paginatedInput'
+ *   },
+ * });
+ */
+export function useLabelsForUserQuery(baseOptions: Apollo.QueryHookOptions<LabelsForUserQuery, LabelsForUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LabelsForUserQuery, LabelsForUserQueryVariables>(LabelsForUserDocument, options);
+      }
+export function useLabelsForUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LabelsForUserQuery, LabelsForUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LabelsForUserQuery, LabelsForUserQueryVariables>(LabelsForUserDocument, options);
+        }
+export type LabelsForUserQueryHookResult = ReturnType<typeof useLabelsForUserQuery>;
+export type LabelsForUserLazyQueryHookResult = ReturnType<typeof useLabelsForUserLazyQuery>;
+export type LabelsForUserQueryResult = Apollo.QueryResult<LabelsForUserQuery, LabelsForUserQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -411,11 +707,51 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const UserUploadedImagesDocument = gql`
-    query UserUploadedImages($limit: Int, $cursor: String) {
-  uploadedImages(limit: $limit, cursor: $cursor) {
+export const SavedImagesDocument = gql`
+    query SavedImages($paginatedInput: PaginatedInput!, $labelId: Int!) {
+  savedImages(paginatedInput: $paginatedInput, labelId: $labelId) {
+    entities {
+      id
+      location
+    }
     hasMore
-    images {
+  }
+}
+    `;
+
+/**
+ * __useSavedImagesQuery__
+ *
+ * To run a query within a React component, call `useSavedImagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSavedImagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSavedImagesQuery({
+ *   variables: {
+ *      paginatedInput: // value for 'paginatedInput'
+ *      labelId: // value for 'labelId'
+ *   },
+ * });
+ */
+export function useSavedImagesQuery(baseOptions: Apollo.QueryHookOptions<SavedImagesQuery, SavedImagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SavedImagesQuery, SavedImagesQueryVariables>(SavedImagesDocument, options);
+      }
+export function useSavedImagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SavedImagesQuery, SavedImagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SavedImagesQuery, SavedImagesQueryVariables>(SavedImagesDocument, options);
+        }
+export type SavedImagesQueryHookResult = ReturnType<typeof useSavedImagesQuery>;
+export type SavedImagesLazyQueryHookResult = ReturnType<typeof useSavedImagesLazyQuery>;
+export type SavedImagesQueryResult = Apollo.QueryResult<SavedImagesQuery, SavedImagesQueryVariables>;
+export const UserUploadedImagesDocument = gql`
+    query UserUploadedImages($paginatedInput: PaginatedInput!) {
+  uploadedImages(paginatedInput: $paginatedInput) {
+    hasMore
+    entities {
       id
       location
       label
@@ -437,12 +773,11 @@ export const UserUploadedImagesDocument = gql`
  * @example
  * const { data, loading, error } = useUserUploadedImagesQuery({
  *   variables: {
- *      limit: // value for 'limit'
- *      cursor: // value for 'cursor'
+ *      paginatedInput: // value for 'paginatedInput'
  *   },
  * });
  */
-export function useUserUploadedImagesQuery(baseOptions?: Apollo.QueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
+export function useUserUploadedImagesQuery(baseOptions: Apollo.QueryHookOptions<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<UserUploadedImagesQuery, UserUploadedImagesQueryVariables>(UserUploadedImagesDocument, options);
       }
