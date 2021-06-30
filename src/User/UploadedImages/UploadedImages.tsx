@@ -119,7 +119,7 @@ function UploadedImages(){
 
     return (
         <div>
-            <SearchField label="Search by Label" onChange={(e) => setLabelFilter(e.target.value)}/>
+            {data && data.uploadedImages.entities.length > 0 ? <SearchField label="Search by Label" onChange={(e) => setLabelFilter(e.target.value)}/>: null}
             <br />
             <Images imageList={imageList!} onImageButtonClick={requestImageDeletion} actionIcon={DeleteIcon}/>
             {data && data.uploadedImages.hasMore ? 

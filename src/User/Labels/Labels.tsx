@@ -76,7 +76,7 @@ function Labels(){
 
     return (
         <div>
-            <SearchField label="Search for Label" onChange={(e) => setToSearch(e.target.value)}/>
+            {data && data.labelsForUser.entities.length > 0 ? <SearchField label="Search for Label" onChange={(e) => setToSearch(e.target.value)}/> : null}
             <br />
             {labels.length > 0 ? 
             <GridList cellHeight={350} cols={3}>
