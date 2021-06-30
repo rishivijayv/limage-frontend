@@ -11,6 +11,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Image } from '../GlobalTypes';
+import { fetchMoreEntities } from "../Utilities/HelperFunctions";
 import { useDiscoverImagesLazyQuery, useMeQuery, useSaveImageMutation, SaveImageResponse, LabelsForUserDocument } from '../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -123,33 +124,33 @@ function Discover(){
     }
 
     
-    const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
+    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
 
-        let nextCursor = cursor;
+    //     let nextCursor = cursor;
 
-        if(!nextCursor){
-            nextCursor = data?.discoverImages.entities[data.discoverImages.entities.length - 1].createdAt;
-        }
-        fetchMore!({
-            variables: {
-                search: labelToDiscover,
-                paginatedInput: {
-                    limit,
-                    cursor: nextCursor
-                }
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if(!fetchMoreResult) return prev;
+    //     if(!nextCursor){
+    //         nextCursor = data?.discoverImages.entities[data.discoverImages.entities.length - 1].createdAt;
+    //     }
+    //     fetchMore!({
+    //         variables: {
+    //             search: labelToDiscover,
+    //             paginatedInput: {
+    //                 limit,
+    //                 cursor: nextCursor
+    //             }
+    //         },
+    //         updateQuery: (prev, { fetchMoreResult }) => {
+    //             if(!fetchMoreResult) return prev;
 
-                fetchMoreResult.discoverImages.entities = [
-                    ...prev.discoverImages.entities,
-                    ...fetchMoreResult.discoverImages.entities
-                ];
+    //             fetchMoreResult.discoverImages.entities = [
+    //                 ...prev.discoverImages.entities,
+    //                 ...fetchMoreResult.discoverImages.entities
+    //             ];
 
-                return fetchMoreResult
-            },
-        });
-    };
+    //             return fetchMoreResult
+    //         },
+    //     });
+    // };
 
     const resetSave = () => {
         setBackdrop(false);
@@ -178,7 +179,7 @@ function Discover(){
                 {data && imageList.length > 0 ? <Images imageList={imageList!} onImageButtonClick={userLoggedIn ? saveImageToLabel : redirectToLogin} actionIcon={SaveAltIcon}/> : null}
                 {data && data.discoverImages.hasMore ? 
                 <div className={classes.loadMoreContainer}>
-                    <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreImages(3, null)}>
+                    <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreEntities(fetchMore!, "discoverImages", data, 3, null)}>
                         { loading ? "Loading..." : "Load More" }
                     </Button>
                 </div>

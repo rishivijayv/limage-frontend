@@ -3,6 +3,7 @@ import { useState } from "react";
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useSavedImagesQuery, SavedImagesQuery, SavedImagesDocument, useDeleteSavedImageMutation, DeleteLabelImageResponse, LabelsForUserDocument } from '../../generated/graphql';
 import { Image } from "../../GlobalTypes";
+import { fetchMoreEntities } from "../../Utilities/HelperFunctions";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Images from "../../Utilities/Images";
 import Button from "@material-ui/core/Button";
@@ -95,7 +96,7 @@ function SavedImages(){
                 const lastCursor = lastResults.savedImages.entities[lastResults.savedImages.entities.length - 1].createdAt;
 
                 // Fetch the next image
-                fetchMoreImages(1, lastCursor);
+                fetchMoreEntities(fetchMore, "savedImages", data!, 1, lastCursor)
                 console.log(lastResults);
             },
             refetchQueries: [{
@@ -110,32 +111,32 @@ function SavedImages(){
         });
     };
 
-    const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
+    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
 
-        let nextCursor = cursor;
+    //     let nextCursor = cursor;
 
-        if(!nextCursor){
-            nextCursor = data?.savedImages.entities[data.savedImages.entities.length - 1].createdAt;
-        }
-        fetchMore({
-            variables: {
-                paginatedInput: {
-                    limit,
-                    cursor: nextCursor
-                }
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if(!fetchMoreResult) return prev;
+    //     if(!nextCursor){
+    //         nextCursor = data?.savedImages.entities[data.savedImages.entities.length - 1].createdAt;
+    //     }
+    //     fetchMore({
+    //         variables: {
+    //             paginatedInput: {
+    //                 limit,
+    //                 cursor: nextCursor
+    //             }
+    //         },
+    //         updateQuery: (prev, { fetchMoreResult }) => {
+    //             if(!fetchMoreResult) return prev;
 
-                fetchMoreResult.savedImages.entities = [
-                    ...prev.savedImages.entities,
-                    ...fetchMoreResult.savedImages.entities
-                ];
+    //             fetchMoreResult.savedImages.entities = [
+    //                 ...prev.savedImages.entities,
+    //                 ...fetchMoreResult.savedImages.entities
+    //             ];
 
-                return fetchMoreResult
-            },
-        });
-    };
+    //             return fetchMoreResult
+    //         },
+    //     });
+    // };
 
     const resetDeletion = () => {
         setBackdrop(false);
@@ -152,7 +153,7 @@ function SavedImages(){
             <Images imageList={savedImages} onImageButtonClick={requestImageDeletion} actionIcon={DeleteIcon}/>
             {data && data.savedImages.hasMore ? 
             <div className={classes.loadMoreContainer}>
-                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreImages(3, null)}>
+                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreEntities(fetchMore, "savedImages", data, 3, null)}>
                     { loading ? "Loading..." : "Load More" }
                 </Button>
             </div>

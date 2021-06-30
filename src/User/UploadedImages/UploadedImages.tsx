@@ -13,6 +13,7 @@ import SearchField from '../../Utilities/SearchField';
 import Images from '../../Utilities/Images';
 import Button from '@material-ui/core/Button';
 import { ApolloError } from '@apollo/client';
+import { fetchMoreEntities } from '../../Utilities/HelperFunctions';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -96,7 +97,7 @@ function UploadedImages(){
                 const lastCursor = lastResults.uploadedImages.entities[lastResults.uploadedImages.entities.length - 1].createdAt;
 
                 // Fetch the next image
-                fetchMoreImages(1, lastCursor);
+                fetchMoreEntities(fetchMore, 'uploadedImages', data!, 1, lastCursor)
                 console.log(lastResults);
             }
         });
@@ -115,32 +116,32 @@ function UploadedImages(){
         displayLabel: `~${filteredImage.label}~`, 
     }));
 
-    const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
+    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
 
-        let nextCursor = cursor;
+    //     let nextCursor = cursor;
 
-        if(!nextCursor){
-            nextCursor = data?.uploadedImages.entities[data.uploadedImages.entities.length - 1].createdAt;
-        }
-        fetchMore({
-            variables: {
-                paginatedInput: {
-                    limit,
-                    cursor: nextCursor
-                }
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if(!fetchMoreResult) return prev;
+    //     if(!nextCursor){
+    //         nextCursor = data?.uploadedImages.entities[data.uploadedImages.entities.length - 1].createdAt;
+    //     }
+    //     fetchMore({
+    //         variables: {
+    //             paginatedInput: {
+    //                 limit,
+    //                 cursor: nextCursor
+    //             }
+    //         },
+    //         updateQuery: (prev, { fetchMoreResult }) => {
+    //             if(!fetchMoreResult) return prev;
 
-                fetchMoreResult.uploadedImages.entities = [
-                    ...prev.uploadedImages.entities,
-                    ...fetchMoreResult.uploadedImages.entities
-                ];
+    //             fetchMoreResult.uploadedImages.entities = [
+    //                 ...prev.uploadedImages.entities,
+    //                 ...fetchMoreResult.uploadedImages.entities
+    //             ];
 
-                return fetchMoreResult
-            },
-        });
-    };
+    //             return fetchMoreResult
+    //         },
+    //     });
+    // };
 
     return (
         <div>
@@ -149,7 +150,7 @@ function UploadedImages(){
             <Images imageList={imageList!} onImageButtonClick={requestImageDeletion} actionIcon={DeleteIcon}/>
             {data && data.uploadedImages.hasMore ? 
             <div className={classes.loadMoreContainer}>
-                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreImages(3, null)}>
+                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreEntities(fetchMore, 'uploadedImages', data, 3, null)}>
                     { loading ? "Loading..." : "Load More" }
                 </Button>
             </div>

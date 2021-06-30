@@ -2,7 +2,8 @@
 
 import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import { SvgIconTypeMap } from "@material-ui/core/SvgIcon/SvgIcon";
-import { User } from './generated/graphql';
+import { UserUploadedImagesQuery, SavedImagesQuery, LabelsForUserQuery, DiscoverImagesQuery } from "./generated/graphql";
+import { User, Exact, PaginatedInput } from './generated/graphql';
 
 export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
@@ -46,3 +47,12 @@ export type StateObject<T> = {
 export type ProtectedComponentProps = {
     user: Pick<User, "username" | "id"> | null
 }
+
+export type FetchableEntities = UserUploadedImagesQuery | SavedImagesQuery | LabelsForUserQuery | DiscoverImagesQuery;
+
+export type UpdateQueryOptions = {
+    fetchMoreResult?: FetchableEntities | undefined;
+    variables?: Exact<{
+        paginatedInput: PaginatedInput;
+    }> | undefined;
+};

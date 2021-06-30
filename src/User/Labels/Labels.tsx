@@ -13,6 +13,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import SearchField from '../../Utilities/SearchField';
 import { useLabelsForUserQuery, UserLabel } from "../../generated/graphql";
+import { fetchMoreEntities } from "../../Utilities/HelperFunctions";
 
 const useStyles = makeStyles((theme: Theme) => ({
     labelCard: {
@@ -71,32 +72,32 @@ function Labels(){
         history.push(`${match.url}/${labelId.toString()}`);
     };
 
-    const fetchMoreLabels = async (limit: number, cursor: string | null | undefined) => {
+    // const fetchMoreLabels = async (limit: number, cursor: string | null | undefined) => {
 
-        let nextCursor = cursor;
+    //     let nextCursor = cursor;
 
-        if(!nextCursor){
-            nextCursor = data?.labelsForUser.entities[data.labelsForUser.entities.length - 1].createdAt;
-        }
-        fetchMore({
-            variables: {
-                paginatedInput: {
-                    limit,
-                    cursor: nextCursor
-                }
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if(!fetchMoreResult) return prev;
+    //     if(!nextCursor){
+    //         nextCursor = data?.labelsForUser.entities[data.labelsForUser.entities.length - 1].createdAt;
+    //     }
+    //     fetchMore({
+    //         variables: {
+    //             paginatedInput: {
+    //                 limit,
+    //                 cursor: nextCursor
+    //             }
+    //         },
+    //         updateQuery: (prev, { fetchMoreResult }) => {
+    //             if(!fetchMoreResult) return prev;
 
-                fetchMoreResult.labelsForUser.entities = [
-                    ...prev.labelsForUser.entities,
-                    ...fetchMoreResult.labelsForUser.entities
-                ];
+    //             fetchMoreResult.labelsForUser.entities = [
+    //                 ...prev.labelsForUser.entities,
+    //                 ...fetchMoreResult.labelsForUser.entities
+    //             ];
 
-                return fetchMoreResult
-            },
-        });
-    };
+    //             return fetchMoreResult
+    //         },
+    //     });
+    // };
 
     return (
         <div>
@@ -121,7 +122,7 @@ function Labels(){
             </GridList>
             {data && data.labelsForUser.hasMore ? 
             <div className={classes.loadMoreContainer}>
-                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreLabels(3, null)}>
+                <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreEntities(fetchMore, "labelsForUser", data, 3, null)}>
                     { loading ? "Loading..." : "Load More" }
                 </Button>
             </div>

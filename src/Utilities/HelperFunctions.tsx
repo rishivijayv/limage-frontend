@@ -1,4 +1,4 @@
-import { StateSetter, InputField, PasswordInputField, StateObject } from '../GlobalTypes';
+import { StateSetter, InputField, PasswordInputField, StateObject, FetchableEntities, UpdateQueryOptions } from '../GlobalTypes';
 import { InputError } from '../generated/graphql';
 import { useEffect, useState } from 'react';
 import { useMeQuery, User } from '../generated/graphql';
@@ -83,4 +83,29 @@ export function parseQueryString(queryString: string): Record<string, string> {
     });
 
     return queryObject;
+}
+
+export async function fetchMoreEntities(fetchMore: Function, queryName: string, data: FetchableEntities, limit: number, cursor: string | null | undefined): Promise<void> {
+    let nextCursor = cursor;
+    if(!nextCursor){
+        nextCursor = data[queryName].entities[data[queryName].entities.length - 1].createdAt;
+    }
+    fetchMore({
+        variables: {
+            paginatedInput: {
+                limit,
+                cursor: nextCursor
+            }
+        },
+        updateQuery: (prev: FetchableEntities, { fetchMoreResult }: UpdateQueryOptions): FetchableEntities => {
+            if(!fetchMoreResult) return prev;
+
+            fetchMoreResult[queryName].entities = [
+                ...prev[queryName].entities,
+                ...fetchMoreResult[queryName].entities
+            ];
+
+            return fetchMoreResult
+        },
+    });
 }
