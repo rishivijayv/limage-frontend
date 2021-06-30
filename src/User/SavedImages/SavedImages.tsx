@@ -111,32 +111,6 @@ function SavedImages(){
         });
     };
 
-    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
-
-    //     let nextCursor = cursor;
-
-    //     if(!nextCursor){
-    //         nextCursor = data?.savedImages.entities[data.savedImages.entities.length - 1].createdAt;
-    //     }
-    //     fetchMore({
-    //         variables: {
-    //             paginatedInput: {
-    //                 limit,
-    //                 cursor: nextCursor
-    //             }
-    //         },
-    //         updateQuery: (prev, { fetchMoreResult }) => {
-    //             if(!fetchMoreResult) return prev;
-
-    //             fetchMoreResult.savedImages.entities = [
-    //                 ...prev.savedImages.entities,
-    //                 ...fetchMoreResult.savedImages.entities
-    //             ];
-
-    //             return fetchMoreResult
-    //         },
-    //     });
-    // };
 
     const resetDeletion = () => {
         setBackdrop(false);

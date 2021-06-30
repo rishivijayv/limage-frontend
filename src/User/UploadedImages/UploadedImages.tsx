@@ -116,32 +116,6 @@ function UploadedImages(){
         displayLabel: `~${filteredImage.label}~`, 
     }));
 
-    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
-
-    //     let nextCursor = cursor;
-
-    //     if(!nextCursor){
-    //         nextCursor = data?.uploadedImages.entities[data.uploadedImages.entities.length - 1].createdAt;
-    //     }
-    //     fetchMore({
-    //         variables: {
-    //             paginatedInput: {
-    //                 limit,
-    //                 cursor: nextCursor
-    //             }
-    //         },
-    //         updateQuery: (prev, { fetchMoreResult }) => {
-    //             if(!fetchMoreResult) return prev;
-
-    //             fetchMoreResult.uploadedImages.entities = [
-    //                 ...prev.uploadedImages.entities,
-    //                 ...fetchMoreResult.uploadedImages.entities
-    //             ];
-
-    //             return fetchMoreResult
-    //         },
-    //     });
-    // };
 
     return (
         <div>

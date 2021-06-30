@@ -72,32 +72,6 @@ function Labels(){
         history.push(`${match.url}/${labelId.toString()}`);
     };
 
-    // const fetchMoreLabels = async (limit: number, cursor: string | null | undefined) => {
-
-    //     let nextCursor = cursor;
-
-    //     if(!nextCursor){
-    //         nextCursor = data?.labelsForUser.entities[data.labelsForUser.entities.length - 1].createdAt;
-    //     }
-    //     fetchMore({
-    //         variables: {
-    //             paginatedInput: {
-    //                 limit,
-    //                 cursor: nextCursor
-    //             }
-    //         },
-    //         updateQuery: (prev, { fetchMoreResult }) => {
-    //             if(!fetchMoreResult) return prev;
-
-    //             fetchMoreResult.labelsForUser.entities = [
-    //                 ...prev.labelsForUser.entities,
-    //                 ...fetchMoreResult.labelsForUser.entities
-    //             ];
-
-    //             return fetchMoreResult
-    //         },
-    //     });
-    // };
 
     return (
         <div>

@@ -123,34 +123,6 @@ function Discover(){
         history.push("/");
     }
 
-    
-    // const fetchMoreImages = async (limit: number, cursor: string | null | undefined) => {
-
-    //     let nextCursor = cursor;
-
-    //     if(!nextCursor){
-    //         nextCursor = data?.discoverImages.entities[data.discoverImages.entities.length - 1].createdAt;
-    //     }
-    //     fetchMore!({
-    //         variables: {
-    //             search: labelToDiscover,
-    //             paginatedInput: {
-    //                 limit,
-    //                 cursor: nextCursor
-    //             }
-    //         },
-    //         updateQuery: (prev, { fetchMoreResult }) => {
-    //             if(!fetchMoreResult) return prev;
-
-    //             fetchMoreResult.discoverImages.entities = [
-    //                 ...prev.discoverImages.entities,
-    //                 ...fetchMoreResult.discoverImages.entities
-    //             ];
-
-    //             return fetchMoreResult
-    //         },
-    //     });
-    // };
 
     const resetSave = () => {
         setBackdrop(false);
