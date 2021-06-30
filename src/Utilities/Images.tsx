@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         maxWidth: '100%',
         maxHeight: '100%',
         border: `1px solid ${theme.palette.common.white}`
-    }
+    },
+    emptyListText: theme.custom.centerContainer
 }));
 
 type ImagesProps = {
@@ -66,6 +67,7 @@ function Images({ imageList, onImageButtonClick, actionIcon }: ImagesProps){
 
     return (
         <div>
+            {imageList.length > 0 ? 
             <Grid container spacing={2}>
                 {imageList
                 .map((image: Image, index: number) => {
@@ -87,9 +89,14 @@ function Images({ imageList, onImageButtonClick, actionIcon }: ImagesProps){
                             </Card>
                         </Grid>
                     );
-                })}
+                })
+                }
             </Grid>
-
+            :
+            <div className={classes.emptyListText}>
+                <h3>Wow, look at all this empty space :D</h3>
+            </div>
+            }
             <Backdrop open={enlargeImage != undefined} onClick={() => setEnlargeImage(undefined)} className={classes.backdrop}>
                 <img src={enlargeImage} className={classes.enlargedImage} />
             </Backdrop>

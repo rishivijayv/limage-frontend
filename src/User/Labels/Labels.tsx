@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginTop: '20px'
     },
     button: theme.custom.button,
+    emptyDiv: theme.custom.centerContainer,
 }));
 
 
@@ -77,6 +78,7 @@ function Labels(){
         <div>
             <SearchField label="Search for Label" onChange={(e) => setToSearch(e.target.value)}/>
             <br />
+            {labels.length > 0 ? 
             <GridList cellHeight={350} cols={3}>
                 {labels
                 .map((label) => {
@@ -94,6 +96,11 @@ function Labels(){
                     </GridListTile>
                 })}
             </GridList>
+            :
+            <div className={classes.emptyDiv}>
+                <h3>{"There don't seem to be any labels here :-("}</h3>
+            </div>
+            }
             {data && data.labelsForUser.hasMore ? 
             <div className={classes.loadMoreContainer}>
                 <Button variant="contained" className={classes.button} component="label" key="load-more-images-button" onClick={() => fetchMoreEntities(fetchMore, "labelsForUser", data, 3, null)}>
