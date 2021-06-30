@@ -68,7 +68,7 @@ function UploadedImages(){
     }
 
     if(loading && !data){
-        return <h3>Loading...</h3>
+        return <></>
     }
 
     const requestImageDeletion = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, imageId: number): Promise<void> => {
