@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import RestoreIcon from '@material-ui/icons/Restore';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Nullable, Undefineable } from '../../GlobalTypes';
-import { useUploadImageMutation, UploadImageMutation } from '../../generated/graphql';
+import { useUploadImageMutation, UploadImageMutation, UserUploadedImagesDocument } from '../../generated/graphql';
 import { ApolloError } from '@apollo/client';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -113,7 +113,16 @@ function Upload(){
                     file: imageFile,
                     label: imageLabel
                 }
-            }
+            },
+            refetchQueries: [{
+                query: UserUploadedImagesDocument,
+                variables: {
+                    paginatedInput: {
+                        limit: 3,
+                        cursor: null
+                    }
+                }
+            }]
         });
 
     }
