@@ -3,6 +3,8 @@ query SavedImages($paginatedInput:PaginatedInput!, $labelId: Int!){
         entities {
             id
             location
+            createdAt
+            label
         },
         hasMore
     }

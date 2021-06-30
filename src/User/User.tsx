@@ -44,7 +44,7 @@ function User({ user }: ProtectedComponentProps){
             <div className={classes.userContainer}>
                 <Heading title={user!.username} links={userHeadingLinks} />
                 <Switch>
-                    <Route path={`${match.path}/labels/:labelName`}>
+                    <Route path={`${match.path}/labels/:labelId`}>
                         <SavedImages />
                     </Route>
                     <Route path={`${match.path}/labels`}>

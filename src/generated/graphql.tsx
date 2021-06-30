@@ -326,7 +326,7 @@ export type SavedImagesQuery = (
     & Pick<PaginatedImageResponse, 'hasMore'>
     & { entities: Array<(
       { __typename?: 'Image' }
-      & Pick<Image, 'id' | 'location'>
+      & Pick<Image, 'id' | 'location' | 'createdAt' | 'label'>
     )> }
   ) }
 );
@@ -716,6 +716,8 @@ export const SavedImagesDocument = gql`
     entities {
       id
       location
+      createdAt
+      label
     }
     hasMore
   }

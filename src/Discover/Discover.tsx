@@ -11,7 +11,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { Image } from '../GlobalTypes';
-import { useDiscoverImagesLazyQuery, useMeQuery, useSaveImageMutation, SaveImageResponse } from '../generated/graphql';
+import { useDiscoverImagesLazyQuery, useMeQuery, useSaveImageMutation, SaveImageResponse, LabelsForUserDocument } from '../generated/graphql';
 
 const useStyles = makeStyles((theme: Theme) => ({
     discoverRoot: {
@@ -104,7 +104,16 @@ function Discover(){
                     imageId,
                     labelName: imageToSave!.displayLabel.substring(1, imageToSave!.displayLabel.length - 1)
                 }
-            }
+            },
+            refetchQueries: [{
+                query: LabelsForUserDocument,
+                variables: {
+                    paginatedInput: {
+                        limit: 3,
+                        cursor: null
+                    }
+                }
+            }]
         });
     };
 

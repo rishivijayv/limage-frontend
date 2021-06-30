@@ -1,6 +1,6 @@
 import { 
     useRouteMatch, 
-    useHistory 
+    useHistory,
 } from 'react-router-dom';
 import { useState } from 'react';
 import GridList from '@material-ui/core/GridList';
@@ -67,7 +67,8 @@ function Labels(){
         const element = event.target as HTMLElement;
         const labelText = element.innerText;
         const labelName = labelText.substring(1, labelText.length - 1);
-        history.push(`${match.url}/${labelName}`);
+        const labelId = labels.find(label => label.labelName === labelName)!.id
+        history.push(`${match.url}/${labelId.toString()}`);
     };
 
     const fetchMoreLabels = async (limit: number, cursor: string | null | undefined) => {
