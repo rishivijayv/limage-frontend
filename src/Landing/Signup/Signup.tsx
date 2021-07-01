@@ -85,8 +85,6 @@ function Signup(){
             setSignupServerError(true);
         }
         
-
-        console.log("Signed up successfully");
     };
 
     const validateUsernameInput = (input: string) => {

@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     let navButtons: NavButton[] = [];
 
     if(loading){
-        console.log('loading the nav bar');
+        return <></>
     }else if(data){
         if(data.me !== null){
             navButtons = authenticatedNavButtons;

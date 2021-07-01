@@ -62,7 +62,6 @@ function Labels(){
         return <h3>Something went wrong. Please try again later</h3>
     }else if(data) {
         labels = data.labelsForUser.entities.filter(label => label.labelName.startsWith(toSearch))
-        console.log(labels);
     }
 
     const navigateToLabel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

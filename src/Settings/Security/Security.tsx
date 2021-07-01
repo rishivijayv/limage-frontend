@@ -33,7 +33,6 @@ function Security(){
         const confirmPasswordEmpty = isFieldEmpty(confirmPassword, setConfirmPassword);
 
         if(!oldPasswordEmpty && !newPasswordEmpty && !confirmPasswordEmpty){
-            console.log("Changing Password");
         }
 
     };
