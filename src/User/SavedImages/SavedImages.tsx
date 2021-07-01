@@ -38,7 +38,8 @@ function SavedImages(){
                 cursor: null
             },
             labelId
-        }
+        },
+        fetchPolicy: "network-only"
     });
     const history = useHistory();
     const [imageDeleteResponse, setImageDeleteResponse] = useState<DeleteLabelImageResponse>(initDeleteResponse)
@@ -97,7 +98,6 @@ function SavedImages(){
 
                 // Fetch the next image
                 fetchMoreEntities(fetchMore, "savedImages", data!, 1, lastCursor)
-                console.log(lastResults);
             },
             refetchQueries: [{
                 query: LabelsForUserDocument,
