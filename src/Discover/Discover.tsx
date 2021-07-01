@@ -45,6 +45,7 @@ function Discover(){
     const [oneSearchSubmitted, setOneSearchSubmitted] = useState(false);
     const [getPlatformImages, { loading, error, data, fetchMore }] = useDiscoverImagesLazyQuery();
     const { loading: meQueryLoading, data: meQueryData } = useMeQuery();
+    const [loginRedirectPrompt, setLoginRedirectPrompt] = useState(false);
     const [saveImageResponse, setSaveImageResponse] = useState<SaveImageResponse>(initSaveImageResponse);
     const [saveImage, { loading: saveImageLoading }] = useSaveImageMutation({
         onError: (_) => {
@@ -120,7 +121,7 @@ function Discover(){
 
     const redirectToLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e.preventDefault();
-        history.push("/");
+        setLoginRedirectPrompt(true);
     }
 
 
@@ -161,6 +162,9 @@ function Discover(){
                 {saveImageLoading ? <CircularProgress color="inherit"/> : null}
                 {!saveImageResponse.saveSuccessful ? <h1>{saveImageResponse.descrtiption}</h1> : null}
                 {saveImageResponse.saveSuccessful ? <h1>Image Successfully Saved.</h1> : null}
+            </Backdrop>
+            <Backdrop open={loginRedirectPrompt} onClick={() => history.push("/")} className={classes.backdrop}>
+                <h1>Please login or signup to save this image.</h1>
             </Backdrop>
             </div>
 
